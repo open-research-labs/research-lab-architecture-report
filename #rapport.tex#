@@ -1,4 +1,4 @@
-\documentclass{rapportPfe}
+ qq:q\documentclass{rapportPfe}
 
 \usepackage[Lenny]{fncychap} % Ou try Lenny, Bjarne, Glenn, etc.
 \usepackage{lipsum}
@@ -45,33 +45,13 @@ Nous remercions chaleureusement l’équipe pédagogique de l’Université Moha
 Ce rapport présente le développement d’un système centralisé destiné à la gestion d’un laboratoire de recherche, en réponse aux limites des méthodes traditionnelles. L’application permet d’automatiser les processus administratifs, de faciliter la communication entre chercheurs et de renforcer la sécurité des données. Ce travail s’inscrit dans le cadre du projet de fin d’année à l’Université Mohammed V.
 
 \chapter*{Liste des Abréviations}
-	\addcontentsline{toc}{chapter}{Liste des Abréviations}
-	\begin{itemize}
-	  \item \textbf{API} : Application Programming Interface
-	  \item \textbf{UI} : User Interface
-	  \item \textbf{DB} : Database
-	  \item \textbf{CRUD} : Create, Read, Update, Delete
-	  \item \textbf{ORM} : Object-Relational Mapping
-	  \item \textbf{Rust} : Un langage de programmation système
-	  \item \textbf{Node.js} : Un environnement d'exécution JavaScript côté serveur
-	  \item \textbf{TypeScript} : Un superset typé de JavaScript
-	  \item \textbf{WebSockets} : Une technologie de communication en temps réel
-	  \item \textbf{Next.js} : Un framework React pour la création d'applications web
-	  \item \textbf{PostgreSQL} : Un système de gestion de base de données relationnelle
-	  \item \textbf{Prisma} : Un ORM pour les bases de données SQL
-	  \item \textbf{Docker} : Un outil de conteneurisation
-	  \item \textbf{Python} : Un langage de programmation
-	  \item \textbf{FastAPI} : Un framework web modern et rapide pour Python
-	  \item \textbf{NLP} : Natural Language Processing (Traitement du langage naturel)
-	  \item \textbf{JWT} : JSON Web Token (jeton web JSON)
-	  \item \textbf{RBAC} : Role-Based Access Control (contrôle d'accès basé sur les rôles)
-	  \item \textbf{ACID} : Atomicité, Cohérence, Isolation, Durabilité (propriétés des transactions)
-	  \item \textbf{SSR} : Server-Side Rendering (rendu côté serveur)
-	  \item \textbf{SSG} : Static Site Generation (génération de site statique)
-	  \item \textbf{DBeaver} : Un outil de gestion de base de données
-	  \item \textbf{Kubernetes} : Un système d'orchestration de conteneurs
-	  \item \textbf{GitHub} : Un service d'hébergement de répertoires Git en ligne
-	\end{itemize}
+\addcontentsline{toc}{chapter}{Liste des Abréviations}
+\begin{itemize}
+  \item \textbf{API} : Application Programming Interface
+  \item \textbf{UI} : User Interface
+  \item \textbf{DB} : Database
+  \item \textbf{CRUD} : Create, Read, Update, Delete
+\end{itemize}
 
 \newpage
 \chapter*{Introduction générale}
@@ -88,6 +68,9 @@ Dans ce contexte, le développement d’une application web dédiée à la gesti
 
 \newpage
 \listoffigures
+
+\newpage
+\listoftables
 
 %------------ Corps du rapport ----------------
 
@@ -247,6 +230,11 @@ Python est utilisé pour le développement des modules d’intelligence artifici
     \item \textbf{Interopérabilité et maintenabilité :} Architecture modulaire facilitant l’intégration avec les autres composants du système et simplifiant la maintenance.
 \end{itemize}
 
+\section*{Conclusion}
+
+L’architecture modulaire adoptée, fondée sur des microservices spécialisés, est conçue pour répondre à des exigences élevées de performance, de fiabilité et d’évolutivité. Chaque composant est isolé, facilitant la maintenance, la mise à jour, et la résilience du système. Cette approche permet aussi une intégration continue de nouvelles technologies, assurant la pérennité de la plateforme.
+
+
 \section{Comparaison des Architectures : Monolithique vs Microservices}
 
 L’architecture générale de l’application adopte un modèle hybride. Les fonctionnalités principales (gestion des publications, authentification, etc.) reposent sur une architecture microservices, tandis que le serveur de messagerie instantanée est développé selon une structure monolithique. Cette section présente une comparaison critique entre ces deux paradigmes, dans le contexte spécifique de notre système.
@@ -323,8 +311,6 @@ Limite de scalabilité & Externalisation possible de l’état (Redis) & Non app
 \end{tabular}
 \end{center}
 
-\newpage
-
 \subsection{Axes d’évolution prévus}
 
 \begin{itemize}
@@ -335,210 +321,207 @@ Limite de scalabilité & Externalisation possible de l’état (Redis) & Non app
     \item \textbf{Supervision centralisée} : Mise en place d’une solution de monitoring comme Prometheus et Grafana afin de visualiser en temps réel les performances de l’ensemble du système.
 \end{itemize}
 
-\section*{Conclusion}
+\subsection*{Conclusion}
 
-Nous avons opté pour une architecture modulaire fondée sur des microservices spécialisés, afin de répondre à des exigences élevées en termes de performance, de fiabilité et d’évolutivité. Chaque composant étant isolé, cela facilite la maintenance, les mises à jour, et renforce la résilience du système. Ce choix permet également une intégration continue de nouvelles technologies, garantissant ainsi la pérennité de la plateforme.
-
-Plus précisément, nous avons adopté une approche hybride qui combine les forces de deux modèles : les microservices, pour leur modularité, leur indépendance technologique et leur capacité à monter en charge ; et le monolithe, pour la gestion de la messagerie instantanée, un domaine où la performance et la cohérence de l’état sont essentielles. Cette combinaison nous permet de tirer le meilleur de chaque approche, tout en assurant un équilibre entre flexibilité et efficacité.
+Ce choix architectural hybride exploite les atouts spécifiques de chaque modèle. Les microservices assurent modularité, indépendance technologique et scalabilité au cœur de l'application. En parallèle, l’approche monolithique garantit des performances optimales et une simplicité d’implémentation pour la messagerie instantanée, où la réactivité et la cohérence de l’état sont primordiales.
 
 \chapter{Conception du site web}
 
-\section{Introduction}
-
-Ce chapitre décrit la conception architecturale de l'écosystème de notre application. Le système repose sur trois services principaux, chacun répondant à des besoins spécifiques :
-
-\begin{enumerate}
-    \item \textbf{Un système de gestion des publications académiques} : pour centraliser et organiser les travaux de recherche.
-    
-    \item \textbf{Un service d’authentification et de profils utilisateurs} : afin de garantir un accès sécurisé et personnalisé.
-    
-    \item \textbf{Une plateforme de messagerie instantanée} : permettant aux chercheurs de communiquer en direct.
-    
-\end{enumerate}
-
-\section{Vue d’ensemble de l’architecture du système}
-
-\subsection{Architecture multi-services}
-
-L’application adopte une approche distribuée, où chaque service fonctionne de manière autonome tout en interagissant avec les autres. Cette modularité permet d’optimiser les performances, la maintenabilité et l’évolutivité du système. Les trois services clés s’appuient sur des modèles architecturaux distincts, choisis pour leur adéquation avec leurs cas d’usage respectifs.
-
+\section{Les diagrammes}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1.0\textwidth]{diagrams/diagram.png}
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram.png}
     \caption{Diagramme général du système}
     \label{fig:diagram-general}
 \end{figure}
 
-\FloatBarrier
-\subsection{Modèle d'interaction de service}
-
-Ce schéma détaille les séquences d’interaction entre les services. Par exemple :
-
-\begin{enumerate}
-    \item Le client se connecte via \texttt{/auth/login} (HTTP).
-    \item Le service d’authentification renvoie un JWT.
-    \item Le client utilise ce token pour accéder aux publications (GET \texttt{/publications}).
-    \item Le chat établit une connexion WebSocket persistante.
-\end{enumerate}
-
+\section{Diagramme 1}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1.1\textwidth]{diagrams/diagram1.png}
-    \caption{Modèle d’Interaction de Service}
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram1.png}
+    \caption{Diagramme 1 - Description à compléter}
     \label{fig:diagram1}
 \end{figure}
 
-\newpage
-\FloatBarrier
-
-\section{Modèles architecturaux spécifiques aux services}
-
-\subsection{Service d’authentification : architecture en couches}
-L’architecture en couches sépare clairement les responsabilités :
-
-\begin{itemize}
-    \item La couche présentation valide les requêtes.
-    \item La couche métier implémente la logique (ex. hachage de mots de passe).
-    \item La couche données gère les opérations CRUD.
-\end{itemize}
-
-
+\section{Diagramme 2}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1.1\textwidth]{diagrams/diagram2.png}
-    \caption{Service d’Authentification}
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram2.png}
+    \caption{Diagramme 2 - Description à compléter}
     \label{fig:diagram2}
 \end{figure}
 
-\newpage
-\FloatBarrier
-\subsection{Service de publication : conception pilotée par le domaine}
-Ce diagramme applique les principes du Domain-Driven Design (DDD) :
-
-\begin{itemize}
-    \item Les agrégats (ex. Publication) délimitent les frontières de cohérence.
-    \item Les entités (ex. Conference) ont une identité unique.
-    \item Les services (ex. FileService) gèrent les opérations transverses.
-\end{itemize}
-
+\section{Diagramme 3}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1.1\textwidth]{diagrams/diagram3.png}
-    \caption{Service de Publications }
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram3.png}
+    \caption{Diagramme 3 - Description à compléter}
     \label{fig:diagram3}
 \end{figure}
 
-\FloatBarrier
-\subsection{Service de chat : architecture orientée événements }
-
-Le diagramme du service de chat illustre une architecture orientée événements conçue pour gérer les interactions entre utilisateurs dans un environnement de chat en temps réel. Cette architecture est pensée pour être évolutive, modulaire, et capable de supporter un grand nombre de connexions simultanées. Elle s’appuie sur l’utilisation de WebSockets pour assurer une communication bidirectionnelle et instantanée ainsi que sur un système d’événements pour coordonner les différents composants du service.
-
-\paragraph{Composants principaux}
-
-\begin{itemize}
-  \item \textbf{Utilisateurs (User A, User B)} \\
-  \item \textbf{WebSockets (WebSocket A, WebSocket B)} \\
-  Interfaces de communication en temps réel entre les utilisateurs et le serveur.
-
-  \item \textbf{Gestionnaire de connexions (Connection Manager)} \\
-  Composant chargé de gérer les connexions WebSocket, en enregistrant les connexions et déconnexions des utilisateurs, et en diffusant les mises à jour concernant la présence des utilisateurs.
-
-  \item \textbf{Gestionnaire de messages (Message Handler)} \\
-  Responsable de la réception, du traitement et de la diffusion des messages entre les participants au chat.
-
-  \item \textbf{Bus d’événements (Event Bus)} \\
-  Système de messagerie interne facilitant la communication entre les différents composants du service en transmettant les événements générés.
-
-  \item \textbf{Base de données (Database)} \\
-  Stockage persistant des messages et des informations de connexion, permettant la récupération, l’archivage et la gestion durable des données.
-\end{itemize}
-
+\section{Diagramme 4}
 \begin{figure}[htbp]
-
-    \includegraphics[width=0.93\textwidth]{diagrams/diagram4.png}
-    \caption{Service de Chat}
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram4.png}
+    \caption{Diagramme 4 - Description à compléter}
     \label{fig:diagram4}
 \end{figure}
 
-
-\FloatBarrier
-
-\section{Architecture des données}
-
-\subsection{Schéma de base de données unifié}
-
-Ce schéma UML montre les tables PostgreSQL et leurs relations :
-
-\begin{itemize}
-    \item \texttt{users} → \texttt{publications} (relation un-à-plusieurs).
-    \item \texttt{conferences} → \texttt{participants} (relation plusieurs-à-plusieurs via une table de jointure).
-    \item La table \texttt{jwt\_tokens} gère les sessions actives.
-\end{itemize}
-
+\section{Diagramme 5}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{diagrams/diagram5.png}
-    \caption{Schéma de Base de Données}
+    \caption{Diagramme 5 - Description à compléter}
     \label{fig:diagram5}
 \end{figure}
 
-
-\FloatBarrier
-\newpage
-\section{Architecture de sécurité}
-
-\subsection{Modèle de sécurité multi-couches}
-
-\subsection*{Sécurité Frontend}
-\begin{itemize}
-  \item \textbf{Application de HTTPS} : Assure que les communications entre le client et le serveur se font via HTTPS, chiffrant les données en transit et protégeant contre l'interception.
-  \item \textbf{Politique de sécurité des contenus (Content Security Policy)} : Stratégie réduisant les vulnérabilités aux attaques par injection de scripts en spécifiant les sources valides pour le chargement des ressources.
-  \item \textbf{Protection contre les attaques XSS} : Prévient les attaques Cross-Site Scripting en neutralisant les scripts malveillants exécutés dans le contexte d'un autre site.
-  \item \textbf{Jetons CSRF} : Utilisés pour prévenir les attaques Cross-Site Request Forgery en s'assurant que les requêtes proviennent de la source attendue.
-\end{itemize}
-
-\subsection*{Sécurité Réseau}
-\begin{itemize}
-  \item \textbf{Équilibreur de charge (Load Balancer)} : Répartit le trafic entre plusieurs serveurs pour améliorer disponibilité et résilience.
-  \item \textbf{Protection contre les attaques DDoS} : Détecte et bloque le trafic malveillant visant à saturer le système.
-  \item \textbf{Limitation du débit (Rate Limiting)} : Restreint le nombre de requêtes par utilisateur pour prévenir abus et attaques.
-  \item \textbf{Liste blanche d'IP (IP Whitelisting)} : Autorise uniquement les connexions depuis des adresses IP spécifiques.
-\end{itemize}
-
-\subsection*{Sécurité d'Authentification}
-\begin{itemize}
-  \item \textbf{Validation des jetons JWT} : Vérification de la validité des JSON Web Tokens.
-  \item \textbf{Rotation des jetons de rafraîchissement} : Renouvellement sécurisé des jetons d'authentification.
-\end{itemize}
-
-\subsection*{Sécurité d'Autorisation}
-\begin{itemize}
-  \item \textbf{Contrôle d'accès basé sur les rôles (RBAC)} : Attribution des permissions selon les rôles utilisateurs.
-  \item \textbf{Autorisations des ressources} : Contrôle précis des actions sur les ressources.
-  \item \textbf{Protection des API} : Mesures pour sécuriser les API contre accès non autorisés.
-  \item \textbf{Filtrage des données} : Prévention des injections SQL et autres attaques liées aux données.
-\end{itemize}
-
-\subsection*{Sécurité des Données}
-\begin{itemize}
-
-  \item \textbf{Hachage des mots de passe} : Stockage sécurisé des mots de passe sous forme de hash.
-  \item \textbf{Validation des fichiers} : Vérification des fichiers uploadés pour éliminer les codes malveillants.
-  \item \textbf{Nettoyage des entrées (Input Sanitization)} : Protection contre XSS, injections SQL, et autres vulnérabilités.
-\end{itemize}
-
-Ces éléments travaillent ensemble pour créer une architecture de sécurité robuste, couvrant les différents aspects de la protection des données et systèmes.
-
-
+\section{Diagramme 6}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1.1\textwidth]{diagrams/diagram6.png}
-    \caption{Modèle de Sécurité Multi-Couches}
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram6.png}
+    \caption{Diagramme 6 - Description à compléter}
     \label{fig:diagram6}
 \end{figure}
 
+\section{Diagramme 7}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram7.png}
+    \caption{Diagramme 7 - Description à compléter}
+    \label{fig:diagram7}
+\end{figure}
 
+\section{Diagramme 8}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram8.png}
+    \caption{Diagramme 8 - Description à compléter}
+    \label{fig:diagram8}
+\end{figure}
+
+\section{Diagramme 9}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram9.png}
+    \caption{Diagramme 9 - Description à compléter}
+    \label{fig:diagram9}
+\end{figure}
+
+\section{Diagramme 10}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram10.png}
+    \caption{Diagramme 10 - Description à compléter}
+    \label{fig:diagram10}
+\end{figure}
+
+\section{Diagramme 11}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram11.png}
+    \caption{Diagramme 11 - Description à compléter}
+    \label{fig:diagram11}
+\end{figure}
+
+\section{Diagramme 12}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram12.png}
+    \caption{Diagramme 12 - Description à compléter}
+    \label{fig:diagram12}
+\end{figure}
+
+\section{Diagramme 13}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram13.png}
+    \caption{Diagramme 13 - Description à compléter}
+    \label{fig:diagram13}
+\end{figure}
+
+\section{Diagramme 14}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram14.png}
+    \caption{Diagramme 14 - Description à compléter}
+    \label{fig:diagram14}
+\end{figure}
+
+\section{Diagramme 15}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram15.png}
+    \caption{Diagramme 15 - Description à compléter}
+    \label{fig:diagram15}
+\end{figure}
+
+
+\section{Chat Database Schema}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram18.png}
+    \caption{Diagramme 18 - Description à compléter}
+    \label{fig:diagram18}
+\end{figure}
+
+\section{Metrics and statistiques}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram19.png}
+    \caption{Diagramme 19 - Description à compléter}
+    \label{fig:diagram19}
+\end{figure}
+
+\section{Publications/Conference Workflow}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram20.png}
+    \caption{Diagramme 20 - Description à compléter}
+    \label{fig:diagram20}
+\end{figure}
+
+\section{Publications Lifecycle}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram21.png}
+    \caption{Diagramme 21 - Description à compléter}
+    \label{fig:diagram21}
+\end{figure}
+
+\section{Upload endpoint}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram22.png}
+    \caption{Diagramme 22 - Description à compléter}
+    \label{fig:diagram22}
+\end{figure}
+
+
+\section{Layered arch}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram24.png}
+    \caption{Diagramme 24 - Description à compléter}
+    \label{fig:diagram24}
+\end{figure}
+
+
+\section{Serivce interactions}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram26.png}
+    \caption{Diagramme 26 - Description à compléter}
+    \label{fig:diagram26}
+\end{figure}
+
+\section{Security Architecture}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/diagram27.png}
+    \caption{Diagramme 27 - Description à compléter}
+    \label{fig:diagram27}
+\end{figure}
 
 \newpage
 
@@ -556,32 +539,9 @@ Le choix de GitHub comme plateforme d’hébergement du code source et de collab
     \item \textbf{Automatisation des validations :} L’intégration avec des outils externes permet l’exécution automatique de tests et de compilations avant toute fusion, garantissant ainsi la qualité du code.
 \end{itemize}
 
-\FloatBarrier
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1.0\textwidth]{diagrams/ss_02.png}
-    \caption{GitHub}
-    \label{fig:diagram5}
-\end{figure}
-
 \subsection{Organisation du dépôt et gestion des branches}
 
-\begin{figure}[htbp]
-    \centering
-    \begin{minipage}[t]{0.3\textwidth}
-        \vspace{0pt} 
-        \includegraphics[width=\textwidth]{diagrams/ss_04.png}
-        \caption{Branches Git}
-        \label{fig:diagram5}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[t]{0.65\textwidth}
-        \vspace{80pt} 
-        \noindent La branche \texttt{main} conserve la version stable du projet. Pour chaque nouvelle fonctionnalité ou correction, une branche spécifique est créée. Cette organisation minimise les conflits et favorise un développement parallèle efficace.
-    \end{minipage}
-\end{figure}
-
-
+La branche \texttt{main} conserve la version stable du projet. Pour chaque nouvelle fonctionnalité ou correction, une branche spécifique est créée. Cette organisation minimise les conflits et favorise un développement parallèle efficace.
 
 \subsection{Demandes de fusion et revue de code}
 
@@ -606,14 +566,6 @@ Postman a été l’outil principal pour tester, documenter et valider les API R
     \item \textbf{Documentation dynamique} générée automatiquement pour faciliter l’intégration frontend/backend.
 \end{itemize}
 
-\FloatBarrier
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1.0\textwidth]{diagrams/ss_05.png}
-    \caption{Tests d'API}
-    \label{fig:diagram5}
-\end{figure}
-
 \section{Tests des WebSockets : wscat}
 
 Pour valider les fonctionnalités temps réel telles que les notifications ou le chat, l’outil en ligne de commande \texttt{wscat} a été utilisé :
@@ -623,16 +575,6 @@ Pour valider les fonctionnalités temps réel telles que les notifications ou le
     \item Tests de stabilité et de latence, permettant un débogage efficace.
     \item Facilité d’intégration dans des scripts automatisés grâce à sa compatibilité shell.
 \end{itemize}
-
-\FloatBarrier
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=1.0\textwidth]{diagrams/ss_08.png}
-    \caption{Test du serveur chat par wscat}
-    \label{fig:diagram5}
-\end{figure}
-
-une session de terminal où un serveur de chat est en cours d'exécution et communique avec un client via WebSocket. Le serveur écoute sur le port 3007 et reçoit des messages de type "ping" du client, auxquels il répond par des messages de type "pong". Cependant, le client envoie également un message de type inconnu, qui est traité par le serveur comme une erreur, illustrant comment le serveur gère les types de messages attendus et les erreurs.
 
 \section{Gestion et interrogation des bases de données : DBeaver}
 
@@ -680,6 +622,10 @@ Ce projet s’inscrit dans une volonté d’améliorer la gestion des activités
 \newpage
 \bibliographystyle{plain}
 \bibliography{refs}
-\chapter*{Bibliographie}
+
+\newpage
+\chapter*{Annexes}
+\addcontentsline{toc}{chapter}{Annexes}
+% Ajouter vos annexes ici
 
 \end{document}

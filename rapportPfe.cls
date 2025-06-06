@@ -54,7 +54,7 @@
     \fancyfoot[C]{\thepage} %Page Number
     \renewcommand{\headrulewidth}{1pt} %0pt for no rule, 2pt thicker etc...
     \renewcommand{\footrulewidth}{1pt}
-    \fancyfoot[L]{Projet de ..} % BOTTOM LEFT
+    \fancyfoot[L]{} % BOTTOM LEFT
     \fancyfoot[R]{2024-2025} % BOTTOM RIGHT
     \fancyhead[L]{\nouppercase{\leftmark}} % TOP LEFT
     \fancyhead[R]{} % TOP RIGHT
