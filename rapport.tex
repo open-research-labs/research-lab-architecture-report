@@ -1,5 +1,6 @@
 \documentclass{rapportPfe}
 
+\usepackage{url}
 \usepackage[Lenny]{fncychap} % Ou try Lenny, Bjarne, Glenn, etc.
 \usepackage{lipsum}
 \usepackage{minted}
@@ -18,7 +19,7 @@
 \titre{Système de gestion d'un laboratoire de recherche}
 \sujet{Projet de Fin d'Année}
 
-\enseignant{Khawla \textsc{Asmi}}
+\enseignant{Professeur  \textsc{Khawla Asmi}}
 
 \eleves{%
     El Araby \textsc{El Mahdi} \\
@@ -71,6 +72,7 @@ Ce rapport présente le développement d’un système centralisé destiné à l
 	  \item \textbf{DBeaver} : Un outil de gestion de base de données
 	  \item \textbf{Kubernetes} : Un système d'orchestration de conteneurs
 	  \item \textbf{GitHub} : Un service d'hébergement de répertoires Git en ligne
+	  \item \textbf{CI/CD} : Intégration Continue / Déploiement Continu
 	\end{itemize}
 
 \newpage
@@ -668,18 +670,244 @@ Docker a été un pilier de notre mise en œuvre, assurant la cohérence des env
 
 \section{Synthèse}
 
-Cette phase de mise en œuvre a permis d’établir une base solide pour le développement du site web, en s’appuyant sur des outils et méthodes professionnels garantissant qualité, traçabilité et collaboration efficace. Bien que le déploiement en production ne soit pas encore réalisé, toutes les préparations nécessaires ont été intégrées dès cette étape afin de faciliter cette future étape.
+Cette phase de mise en œuvre a permis d'établir une base solide pour le développement du site web, en s'appuyant sur des outils et méthodes professionnels garantissant qualité, traçabilité et collaboration efficace. Bien que le déploiement en production ne soit pas encore réalisé, toutes les préparations nécessaires ont été intégrées dès cette étape afin de faciliter cette future étape.
+
+\section{Méthodologie de Développement}
+\subsubsection{Approche Agile Adoptée}
+Le projet a suivi une méthodologie \textbf{Agile} adaptée aux contraintes académiques et à la taille réduite de l'équipe. Cette approche a été structurée en sprints courts de deux semaines, avec une répartition claire des responsabilités techniques.
+
+\paragraph{Principes Appliqués :}
+\begin{itemize}
+    \item \textbf{Développement itératif} : livraisons fonctionnelles toutes les deux semaines avec démonstrations à l'encadrant
+    \item \textbf{Collaboration intensive} : réunions de synchronisation régulières pour coordonner les intégrations entre services
+    \item \textbf{Répartition par microservice} : chaque membre était responsable d’un microservice spécifique (authentification, publications, IA, chat), garantissant autonomie et spécialisation
+    \item \textbf{Mises à jour continues} : chaque service était maintenu et amélioré indépendamment, avec intégration progressive via Docker Compose
+    \item \textbf{Priorité au logiciel fonctionnel} : chaque sprint visait un livrable testable plutôt qu'une documentation exhaustive
+\end{itemize}
+
+
+\paragraph{Organisation des sprints :}
+\begin{itemize}
+    \item \textbf{Sprint 1} : Architecture, Docker, auth Node.js
+    \item \textbf{Sprint 2} : API Rust pour publications, téléversement
+    \item \textbf{Sprint 3} : Frontend Next.js, responsive design
+    \item \textbf{Sprint 4} : Chat WebSocket, intégration IA, tests
+\end{itemize}
+
+\subsubsection{Comparaison Agile vs Waterfall}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Critère} & \textbf{Agile (choisi)} & \textbf{Waterfall (rejeté)} \\
+\hline
+Flexibilité & Adaptable en cours de route & Coûteux à modifier \\
+\hline
+Retours & Continus & Tardifs \\
+\hline
+Livraisons & Incrémentales & Un bloc final \\
+\hline
+Documentation & Juste suffisante & Exhaustive dès le début \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\subsection{Captures d'écran de l'application}
+
+Cette section présente les différentes interfaces de l'application développée, illustrant les fonctionnalités principales à travers des captures d'écran détaillées. Chaque interface a été conçue pour offrir une expérience utilisateur optimale tout en respectant les principes d'ergonomie et d'accessibilité.
+
+\subsubsection{Interface de connexion}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/a_ss_02.png}
+    \caption{Interface de connexion utilisateur}
+    \label{fig:login}
+\end{figure}
+
+L'interface de connexion présente un design épuré et professionnel, caractérisé par :
+\begin{itemize}
+    \item \textbf{Validation en temps réel} : Les champs de saisie affichent instantanément les erreurs de format ou les champs manquants
+    \item \textbf{Messages d'erreur contextuels} : Affichage de messages clairs en cas d'échec d'authentification
+    \item \textbf{Design responsive} : Interface adaptée aux différentes tailles d'écran
+    \item \textbf{Sécurité visuelle} : Masquage automatique du mot de passe avec option d'affichage temporaire
+\end{itemize}
+
+\subsubsection{Tableau de bord principal}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_08.png}
+    \caption{Tableau de bord principal avec métriques et aperçu}
+    \label{fig:dashboard}
+\end{figure}
+
+Le tableau de bord offre une vue d'ensemble complète des activités du laboratoire :
+\begin{itemize}
+    \item \textbf{Métriques en temps réel} : Statistiques sur les publications, conférences et membres actifs
+    \item \textbf{Publications récentes} : Aperçu des dernières publications ajoutées avec leurs statuts
+    \item \textbf{Notifications} : Système d'alertes pour les échéances importantes et les nouvelles activités
+    \item \textbf{Navigation intuitive} : Menu latéral avec accès rapide à toutes les fonctionnalités
+\end{itemize}
+
+\subsubsection{Module de gestion des publications}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_12.png}
+    \caption{Interface de gestion des publications avec filtres et pagination}
+    \label{fig:publications}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/a_ss_11.png}
+    \caption{Formulaire d'ajout d'une nouvelle publication}
+    \label{fig:add_publication}
+\end{figure}
+
+Le module publications comprend des fonctionnalités avancées :
+\begin{itemize}
+    \item \textbf{Filtres dynamiques} : Recherche par auteur, date, type de publication, et mots-clés
+    \item \textbf{Pagination intelligente} : Navigation fluide à travers de grandes collections de données
+    \item \textbf{Formulaire d'ajout complet} : Saisie structurée avec validation des champs obligatoires
+    \item \textbf{Upload de fichiers PDF} : Glisser-déposer avec prévisualisation et validation du format
+    \item \textbf{Métadonnées enrichies} : Gestion des co-auteurs, affiliations, et classifications
+\end{itemize}
+
+\subsubsection{Intégration de l'intelligence artificielle}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_13.png}
+    \caption{Génération automatique de résumés par intelligence artificielle}
+    \label{fig:ai_summary}
+\end{figure}
+
+L'interface d'IA démontre les capacités avancées du système :
+\begin{itemize}
+    \item \textbf{Résumés automatiques} : Génération de synthèses à partir du contenu des publications PDF
+    \item \textbf{Analyse sémantique} : Extraction des concepts clés et des contributions principales
+    \item \textbf{Interface de révision} : Possibilité d'éditer et valider les résumés générés
+    \item \textbf{Indicateurs de qualité} : Score de confiance et métriques sur la précision du résumé
+\end{itemize}
+
+\subsubsection{Système de messagerie instantanée}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_06.png}
+    \caption{Interface de chat avec liste des utilisateurs et groups}
+    \label{fig:chat}
+\end{figure}
+
+Le système de chat offre une communication fluide :
+\begin{itemize}
+    \item \textbf{Groupes de messagerie} : Création de salons de discussion pour les équipes ou projets
+    \item \textbf{Messages instantanés} : Communication bidirectionnelle via WebSockets
+    \item \textbf{Historique persistant} : Conservation et recherche dans l'historique des conversations
+    \item \textbf{Notifications push} : Alertes pour les nouveaux messages et mentions
+    \item \textbf{Interface adaptative} : Design optimisé pour les conversations longues
+\end{itemize}
+
+\subsubsection{Analyse de l'expérience utilisateur}
+
+Les captures d'écran révèlent plusieurs aspects importants de l'interface :
+
+\paragraph{Cohérence visuelle}
+L'ensemble de l'application maintient une identité graphique homogène avec une palette de couleurs professionnelle, une typographie lisible et des éléments d'interface standardisés.
+
+\paragraph{Ergonomie et utilisabilité}
+Chaque écran respecte les principes d'ergonomie web avec des zones de contenu bien délimitées, une hiérarchie visuelle claire et des actions intuitives.
+
+\paragraph{Feedback utilisateur}
+Les interfaces intègrent des mécanismes de retour (loading states, confirmations, messages d'erreur) pour guider l'utilisateur dans ses interactions.
+
+Cette présentation visuelle confirme que l'application répond aux exigences fonctionnelles tout en offrant une expérience utilisateur moderne et professionnelle, adaptée aux besoins spécifiques d'un laboratoire de recherche.
+
+\newpage
+\section{Conclusion Générale étendue}
+Ce projet constitue une réponse concrète aux défis de gestion des laboratoires modernes. En plus de l'implémentation technique, nous avons mis l'accent sur les aspects organisationnels et les bonnes pratiques professionnelles.
+
+\paragraph{Défis et solutions}
+\begin{itemize}
+    \item \textbf{Coordination microservices} : API Gateway, standards REST
+    \item \textbf{Performance IA} : Redis cache + traitement async
+    \item \textbf{Technologies multiples} : documentation, apprentissage continu
+\end{itemize}
+
+\paragraph{Alignement avec les objectifs secondaires}
+\begin{itemize}
+    \item Automatisation des tâches (upload, résumés, notifs)
+    \item Centralisation des échanges (chat + tableau de bord)
+    \item Sécurité (JWT, RBAC, audit)
+    \item Évolutivité (Docker , Kubernetes prévu)
+\end{itemize}
+
+\paragraph{Perspectives}
+\begin{itemize}
+    \item Amélioration IA (modèles GPT-4)
+    \item Dashboards analytiques (D3.js)
+    \item CI/CD avec GitHub Actions, monitoring Prometheus
+    \item Modules futurs : gestion de projets, revue par pairs, intégration PubMed
+    \item Adoption : pilote universitaire, extension, commercialisation SaaS
+\end{itemize}
+
+\paragraph{Impact}
+\begin{itemize}
+    \item Compétences : Rust, TS, Python, DevOps, IA
+    \item Méthodes pro : Agile, TDD, doc technique, outils collaboratifs
+\end{itemize}
+
+
 
 
 % ... Répétez pour diagram3.png à diagram27.png ...
 \newpage
 \chapter*{Conclusion Générale}
 \addcontentsline{toc}{chapter}{Conclusion Générale}
-Ce projet s’inscrit dans une volonté d’améliorer la gestion des activités de recherche à travers une plateforme centralisée. Grâce à une architecture moderne basée sur des microservices, une base de données PostgreSQL, une interface intuitive et une sécurité renforcée, l’application répond aux besoins croissants des laboratoires universitaires. Les perspectives d’évolution incluent l’intégration d’outils analytiques avancés et l’extension vers d’autres structures de recherche.
+Ce projet s’inscrit dans une volonté d’améliorer la gestion des activités de recherche à travers une plateforme centralisée.Il pose les bases d'un écosystème digital unifié pour la recherche, conciliant technologie, ergonomie et productivité scientifique. Grâce à une architecture moderne basée sur des microservices, une base de données PostgreSQL, une interface intuitive et une sécurité renforcée, l’application répond aux besoins croissants des laboratoires universitaires. Les perspectives d’évolution incluent l’intégration d’outils analytiques avancés et l’extension vers d’autres structures de recherche.
 
 \newpage
 \bibliographystyle{plain}
 \bibliography{refs}
 \chapter*{Bibliographie}
+\begin{thebibliography}{10}
+
+\bibitem{richardson2018}
+C.~Richardson, \textit{Microservices Patterns: With Examples in Java}. Manning Publications, 2018.
+
+\bibitem{evans2003}
+E.~Evans, \textit{Domain-Driven Design: Tackling Complexity in the Heart of Software}. Addison-Wesley Professional, 2003.
+
+\bibitem{fowler2014}
+M.~Fowler, ``Microservices,'' \textit{martinfowler.com}, Mar. 2014. [Online]. Available: \url{https://martinfowler.com/articles/microservices.html}
+
+\bibitem{postgresql2024}
+PostgreSQL Global Development Group, ``PostgreSQL Documentation,'' \textit{postgresql.org}, 2024. [Online]. Available: \url{https://www.postgresql.org/docs/}
+
+\bibitem{mdn2024}
+Mozilla Developer Network, ``WebSocket API,'' \textit{developer.mozilla.org}, 2024. [Online]. Available: \url{https://developer.mozilla.org/en-US/docs/Web/API/WebSocket}
+
+\bibitem{docker2024}
+Docker Inc., ``Docker Documentation,'' \textit{docs.docker.com}, 2024. [Online]. Available: \url{https://docs.docker.com/}
+
+\bibitem{nextjs2024}
+Next.js Team, ``Next.js Documentation,'' \textit{nextjs.org}, 2024. [Online]. Available: \url{https://nextjs.org/docs}
+
+\bibitem{rust2024}
+Rust Foundation, ``The Rust Programming Language,'' \textit{doc.rust-lang.org}, 2024. [Online]. Available: \url{https://doc.rust-lang.org/}
+
+\bibitem{owasp2021}
+OWASP Foundation, ``OWASP Top Ten Web Application Security Risks,'' \textit{owasp.org}, 2021.
+
+\bibitem{w3c2023}
+T.~Berners-Lee \textit{et al.}, ``Web Security,'' \textit{W3C}, 2023.
+
+\bibitem{haverbeke2018}
+M.~Haverbeke, \textit{Eloquent JavaScript: A Modern Introduction to Programming}, 3rd ed. No Starch Press, 2018.
+
+\end{thebibliography}
+
 
 \end{document}
