@@ -820,6 +820,8 @@ Cette conception robuste et documentée constitue la base du chapitre suivant, d
 
 \chapter{Mise en œuvre du site web}
 
+Ce chapitre présente la concrétisation technique du projet, détaillant les outils, méthodologies et défis rencontrés lors du développement. Nous exposons d’abord la gestion collaborative du code via GitHub, puis les stratégies de test des API (Postman) et des WebSockets (wscat). La conteneurisation avec Docker et la gestion des bases de données avec DBeaver illustrent notre approche industrialisée. Une section dédiée à la méthodologie Agile met en lumière l’organisation itérative du travail, tandis que les retours utilisateurs et captures d’écran valident l’ergonomie et la performance de l’application. Enfin, nous analysons les limites identifiées et les pistes d’optimisation pour une future montée en charge.
+
 \section{Gestion du code source et collaboration : GitHub}
 
 Le choix de GitHub comme plateforme d’hébergement du code source et de collaboration a grandement contribué à industrialiser notre processus de développement, en alignant nos pratiques avec les standards professionnels actuels.
@@ -842,7 +844,7 @@ Le choix de GitHub comme plateforme d’hébergement du code source et de collab
 
 \subsection{Organisation du dépôt et gestion des branches}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{minipage}[t]{0.3\textwidth}
         \vspace{0pt} 
@@ -969,7 +971,8 @@ Le projet a suivi une méthodologie \textbf{Agile} adaptée aux contraintes acad
 \end{itemize}
 
 \subsubsection{Comparaison Agile vs Waterfall}
-\begin{center}
+\begin{table}[ht]
+\centering
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Critère} & \textbf{Agile (choisi)} & \textbf{Waterfall (rejeté)} \\
@@ -983,8 +986,9 @@ Livraisons & Incrémentales & Un bloc final \\
 Documentation & Juste suffisante & Exhaustive dès le début \\
 \hline
 \end{tabular}
-\end{center}
-
+\caption{Comparaison de Méthodologie de Développement}
+\label{tab:compare-meth}
+\end{table}
 
 \subsection{Captures d'écran de l'application}
 
@@ -1134,9 +1138,6 @@ Ce projet constitue une réponse concrète aux défis de gestion des laboratoire
 \end{itemize}
 
 
-
-
-% ... Répétez pour diagram3.png à diagram27.png ...
 \newpage
 \chapter*{Conclusion Générale}
 \addcontentsline{toc}{chapter}{Conclusion Générale}
