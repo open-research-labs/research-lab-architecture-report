@@ -3,8 +3,6 @@
 \usepackage[utf8]{inputenc}   
 \usepackage[T1]{fontenc}     
 \usepackage[french]{babel} 
-
-
 \usepackage{enumitem}
 \usepackage{url}
 \usepackage[Lenny]{fncychap} % Ou try Lenny, Bjarne, Glenn, etc.
@@ -186,7 +184,7 @@ L'architecture proposée s'articule autour de sept composants principaux, chacun
 \begin{tabular}{| >{\raggedright\arraybackslash}p{3cm} 
                 | >{\raggedright\arraybackslash}p{2.5cm} 
                 | >{\raggedright\arraybackslash}p{4cm} 
-                | >{\raggedright\arraybackslash}p{4cm} |}
+                | >{\raggedright\arraybackslash}p{6.5cm} |}
 
 \hline
 \textbf{Service} & \textbf{Technologie} & \textbf{Justification principale} & \textbf{Avantages clés} \\
@@ -240,6 +238,8 @@ Le service d'authentification constitue la pierre angulaire de la sécurité de 
     \item \textbf{Stratégies d'authentification supportées:}
 \end{itemize}
 
+\begin{table}[ht]
+\centering
 \begin{tabular}{| >{\raggedright\arraybackslash}p{4cm} 
                 | >{\raggedright\arraybackslash}p{3cm} 
                 | >{\raggedright\arraybackslash}p{3cm} 
@@ -256,6 +256,9 @@ Session-based & Élevée & Faible & Applications web classiques \\
 Multi-factor (MFA) & Très élevée & Élevée & Comptes privilégiés \\
 \hline
 \end{tabular}
+\caption{Stratégies d'authentification supportées}
+\label{tab:auth-aupported}
+\end{table}
 
 \section{Service de cache des publications : Redis}
 
@@ -272,8 +275,11 @@ Redis présente des avantages décisifs pour le cache des publications académiq
     \item \textbf{Scalabilité horizontale} : Support du clustering pour une montée en charge transparente.
 \end{itemize}
 
-\subsection{Stratégies de cache implémentées}
+\newpage
+\subsection{Stratégies de cache }
 
+\begin{table}[H]
+\centering
 \begin{tabular}{| >{\raggedright\arraybackslash}p{4cm} 
                 | >{\raggedright\arraybackslash}p{3cm} 
                 | >{\raggedright\arraybackslash}p{5cm} 
@@ -290,6 +296,9 @@ Write-behind & 30 minutes & Statistiques d'accès & 60--70\% \\
 Refresh-ahead & 2 heures & Publications populaires & 90--95\% \\
 \hline
 \end{tabular}
+\caption{Stratégies de cache}
+\label{tab:cache-stratg}
+\end{table}
 
 \subsection{Métriques de performance du cache}
 
@@ -373,7 +382,9 @@ L’architecture générale de l’application adopte un modèle hybride. Les fo
 
 \subsection{Tableau comparatif des caractéristiques}
 
-\begin{center}
+
+\begin{table}[H]
+\centering
 \begin{tabular}{|p{4cm}|p{5.5cm}|p{5.5cm}|}
 \hline
 \textbf{Critère} & \textbf{Microservices (Cœur de l'application)} & \textbf{Monolithique (Serveur de chat)} \\
@@ -397,7 +408,9 @@ Isolation des pannes & Défaillances circonscrites à un seul service & Risque d
 Vitesse de développement & Autonomie par équipe/service & Rapidité dans un environnement centralisé \\
 \hline
 \end{tabular}
-\end{center}
+\caption{Comparaison des caractéristiques entre Monolithique et Microservices}
+\label{tab:Arch-comp}
+\end{table}
 
 \subsection{Choix des microservices pour le cœur applicatif}
 
@@ -427,7 +440,8 @@ Vitesse de développement & Autonomie par équipe/service & Rapidité dans un en
 
 \subsection{Enjeux identifiés et stratégies d’atténuation}
 
-\begin{center}
+\begin{table}[H]
+\centering
 \begin{tabular}{|p{4.5cm}|p{5cm}|p{5cm}|}
 \hline
 \textbf{Problème identifié} & \textbf{Solution côté microservices} & \textbf{Solution côté monolithique} \\
@@ -441,9 +455,9 @@ Complexité d’exploitation & Outils d’orchestration (Docker Compose, Swarm),
 Limite de scalabilité & Externalisation possible de l’état (Redis) & Non applicable \\
 \hline
 \end{tabular}
-\end{center}
-
-\newpage
+\caption{Enjeux identifiés et stratégies d’atténuation}
+\label{tab:prob_solut}
+\end{table}
 
 \subsection{Axes d’évolution prévus}
 
@@ -569,7 +583,7 @@ L’architecture en couches permet une séparation claire des responsabilités, 
     \item \textbf{Accès aux données} : Gère les opérations CRUD via une abstraction avec Prisma.
 \end{itemize}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1.1\textwidth]{diagrams/diagram2.png}
     \caption{Architecture du service d’authentification}
@@ -598,8 +612,6 @@ Ce service adopte une architecture stratifiée en quatre couches, conformément 
     \item \textbf{Flexibilité} : Possibilité de changer de base de données ou de framework sans refonte majeure.
 \end{itemize}
 
-\newpage
-\FloatBarrier
 
 \subsection{Service de publication : conception pilotée par le domaine}
 Ce diagramme applique les principes du Domain-Driven Design (DDD) :
@@ -693,40 +705,46 @@ Cette approche événementielle offre plusieurs avantages cruciaux pour un servi
 
 \subsection{Schéma de base de données unifié}
 
-Ce schéma UML montre les tables PostgreSQL et leurs relations :
+Dans cette sous-section, nous présentons un schéma de base de données unifié structurant l’ensemble des fonctionnalités clés du système proposé. Ce schéma a été conçu pour refléter les différents domaines d’interaction au sein d’une notre plateforme .
 
-\begin{itemize}
-    \item \texttt{users} → \texttt{publications} (relation un-à-plusieurs).
-    \item \texttt{conferences} → \texttt{participants} (relation plusieurs-à-plusieurs via une table de jointure).
-    \item La table \texttt{jwt\_tokens} gère les sessions actives.
-\end{itemize}
+Chaque diagramme entité-association illustre une composante fonctionnelle du système, en mettant en évidence les relations entre les entités principales et les tables de liaison utilisées pour garantir la flexibilité et la cohérence des données. L’objectif est de fournir une vue claire, normalisée et extensible de l’architecture relationnelle supportant les opérations courantes de la plateforme, tout en assurant une intégrité des données et une traçabilité des interactions utilisateurs.
 
-\begin{figure}[htbp]
+Les figures suivantes détaillent successivement la structure de la gestion des utilisateurs, le suivi des publications scientifiques et des événements académiques, ainsi que le système de communication intégré entre chercheurs.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{diagrams/diagram5.png}
-    \caption{User Management and Research Groups Entity Relationship Diagram}
+    \caption{Schéma entité-association — Gestion des utilisateurs et des groupes de recherche}
     \label{fig:diagram5}
 \end{figure}
 
-Ce premier schéma présente un système centré sur la gestion d'utilisateurs académiques et leurs interactions sociales. La table users constitue le cœur du système avec des informations complètes sur chaque utilisateur (identifiants, données personnelles, rôle, statut et affiliation). Le système permet aux utilisateurs de créer des liens sociaux via la table links, de recevoir des notifications personnalisées, et de former des groupes de recherche collaboratifs. La table de liaison group\_user facilite l'appartenance multiple aux groupes, tandis que le système de notifications assure une communication efficace entre les membres.
+Ce premier schéma représente une structure centrée sur la gestion des utilisateurs académiques et leurs interactions sociales. La table \texttt{users} constitue le cœur du système, regroupant des informations détaillées sur chaque utilisateur (identifiants, données personnelles, rôle, statut et affiliation institutionnelle). 
 
-\begin{figure}[htbp]
+Le modèle relationnel permet la création de liens sociaux via la table \texttt{links}, l’envoi de notifications personnalisées, ainsi que la constitution de groupes de recherche collaboratifs. La table de liaison \texttt{group\_user} autorise une appartenance multiple à divers groupes, tandis que le système de notifications facilite la communication entre les membres. Cette structure favorise un réseau académique dynamique et interconnecté.
+
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{diagrams/diagram7.png}
-    \caption{Publications and Conferences Entity Relationship Diagram}
-    \label{fig:diagram5}
+    \caption{Schéma entité-association — Publications scientifiques et conférences académiques}
+    \label{fig:diagram7}
 \end{figure}
 
-Ce schéma se concentre sur la gestion des publications scientifiques et des conférences académiques. Les users peuvent soumettre des publications qui sont ensuite associées à des conferences spécifiques via la table de liaison conference\_publications. Chaque publication peut inclure des fichiers annexes stockés dans publication\_files, permettant de gérer documents, présentations et autres ressources. Les publications peuvent également appartenir à des groups de recherche, facilitant la collaboration institutionnelle. Cette structure permet de tracer l'évolution des travaux de recherche depuis leur soumission jusqu'à leur présentation en conférence, tout en maintenant les liens entre chercheurs, institutions et événements académiques.
+Ce second schéma illustre la gestion des publications scientifiques et des conférences académiques. Les utilisateurs peuvent soumettre des publications, lesquelles sont associées à des conférences spécifiques par l’intermédiaire de la table de liaison \texttt{conference\_publications}. 
 
-\begin{figure}[htbp]
+Chaque publication peut inclure des fichiers annexes (articles, diapositives, etc.), gérés via la table \texttt{publication\_files}. En outre, les publications peuvent être liées à des groupes de recherche, renforçant ainsi la collaboration institutionnelle. Cette organisation permet de suivre l’évolution d’un travail scientifique, depuis sa soumission jusqu’à sa présentation en conférence, tout en maintenant les liens entre chercheurs, institutions et événements académiques.
+
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{diagrams/diagram8.png}
-    \caption{Communication System Entity Relationship Diagram}
-    \label{fig:diagram5}
+    \caption{Schéma entité-association — Système de communication intégré}
+    \label{fig:diagram8}
 \end{figure}
 
-Ce schéma implémente un système de communication sophistiqué basé sur les groupes de recherche. Les groups peuvent créer des conversations de différents types (discussions publiques, privées, annonces), permettant une communication structurée. Les users participent à ces conversations via la table \texttt{conversation\_participants} qui définit leur rôle dans chaque discussion. Tous les messages échangés sont horodatés et traçables, avec un système de statut permettant de suivre leur lecture ou leur importance. Cette architecture favorise la collaboration en équipe en offrant des espaces de discussion dédiés à chaque groupe de recherche, tout en maintenant la flexibilité nécessaire pour différents types d'échanges académiques.
+Le dernier schéma présente l’architecture d’un système de communication conçu autour des groupes de recherche. Ces derniers peuvent créer différents types de conversations (publiques, privées ou annonces), offrant un cadre structuré pour les échanges. 
+
+Les utilisateurs participent aux discussions via la table \texttt{conversation\_participants}, qui précise leur rôle dans chaque conversation. Tous les messages sont horodatés et dotés d’un statut indiquant, par exemple, leur lecture ou leur importance. Ce système assure une communication fluide et traçable, tout en favorisant le travail collaboratif au sein des équipes de recherche.
 
 \FloatBarrier
 \newpage
@@ -782,6 +800,7 @@ Ces éléments travaillent ensemble pour créer une architecture de sécurité r
     \label{fig:diagram6}
 \end{figure}
 
+\newpage
 \section{Conclusion}
 Ce chapitre a présenté la conception architecturale détaillée de notre plateforme de gestion de laboratoire de recherche, articulée autour de trois piliers fondamentaux : la gestion des publications, l’authentification sécurisée et la messagerie en temps réel. L’approche modulaire, combinant microservices et monolithe optimisé, a permis d’adapter chaque composant aux exigences spécifiques de son domaine, tout en garantissant une intégration harmonieuse de l’ensemble.
 
@@ -1126,8 +1145,7 @@ Ce projet s’inscrit dans une volonté d’améliorer la gestion des activités
 \newpage
 \bibliographystyle{plain}
 \bibliography{refs}
-\chapter*{Bibliographie}
-\begin{thebibliography}{10}
+\begin{thebibliography}{21}
 
 \bibitem{richardson2018}
 C.~Richardson, \textit{Microservices Patterns: With Examples in Java}. Manning Publications, 2018.
@@ -1162,7 +1180,36 @@ T.~Berners-Lee \textit{et al.}, ``Web Security,'' \textit{W3C}, 2023.
 \bibitem{haverbeke2018}
 M.~Haverbeke, \textit{Eloquent JavaScript: A Modern Introduction to Programming}, 3rd ed. No Starch Press, 2018.
 
-\end{thebibliography}
+\bibitem{newman2021}
+S.~Newman, \textit{Building Microservices: Designing Fine-Grained Systems}, 2nd ed. O'Reilly Media, 2021.
 
+\bibitem{verma2019}
+A.~Verma, \textit{Cloud Native Patterns: Designing Change-Tolerant Software}. Manning Publications, 2019.
+
+\bibitem{fielding2000}
+R.~Fielding, \textit{Architectural Styles and the Design of Network-based Software Architectures}. Dissertation, UC Irvine, 2000.
+
+\bibitem{kleppmann2017}
+M.~Kleppmann, \textit{Designing Data-Intensive Applications}. O'Reilly Media, 2017.
+
+\bibitem{martin2017}
+R.~Martin, \textit{Clean Architecture: A Craftsman's Guide to Software Structure and Design}. Prentice Hall, 2017.
+
+\bibitem{chollet2021}
+F.~Chollet, \textit{Deep Learning with Python}, 2nd ed. Manning Publications, 2021.
+
+\bibitem{walls2020}
+C.~Walls, \textit{Spring in Action}, 6th ed. Manning Publications, 2020.
+
+\bibitem{hohpe2003}
+G.~Hohpe and B.~Woolf, \textit{Enterprise Integration Patterns}. Addison-Wesley, 2003.
+
+\bibitem{souders2007}
+S.~Souders, \textit{High Performance Web Sites}. O'Reilly Media, 2007.
+
+\bibitem{owasp-cheatsheets}
+OWASP Foundation, ``OWASP Cheat Sheet Series,'' 2023. [Online]. Available: \url{https://cheatsheetseries.owasp.org/}
+
+\end{thebibliography}
 
 \end{document}
