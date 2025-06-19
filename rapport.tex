@@ -503,6 +503,43 @@ L’application adopte une approche distribuée, où chaque service fonctionne d
     \label{fig:diagram-general}
 \end{figure}
 
+\subsubsection*{Description technique}
+
+Ce diagramme illustre un système distribué basé sur une architecture de microservices avec trois services principaux : \textit{Authentication}, \textit{Publication} et \textit{Chat}. La communication suit un modèle hybride combinant HTTP synchrone et WebSocket asynchrone.
+
+\subsubsection*{Analyse académique}
+
+\textbf{Pattern architectural} : Microservices avec séparation des préoccupations
+
+\textbf{Protocoles de communication} :
+\begin{itemize}[label=--]
+    \item HTTP/REST pour les opérations CRUD
+    \item WebSocket pour la communication temps réel
+    \item JWT pour l'authentification \textit{stateless}
+\end{itemize}
+
+\textbf{Avantages} :
+\begin{itemize}[label=+]
+    \item Scalabilité horizontale
+    \item Résilience par isolation des services
+\end{itemize}
+
+\textbf{Inconvénients} :
+\begin{itemize}[label=-]
+    \item Complexité de la gestion des états distribués
+    \item Latence réseau potentielle
+\end{itemize}
+
+\subsubsection*{Flux de communication}
+
+\begin{itemize}
+    \item \textbf{Authentification} : \texttt{POST /auth/login} → génération d'un JWT
+    \item \textbf{Autorisation} : Validation des tokens JWT pour chaque requête
+    \item \textbf{Publication} : Accès aux ressources avec contexte utilisateur
+    \item \textbf{Chat} : Établissement d’une connexion WebSocket avec authentification JWT
+\end{itemize}
+
+
 \FloatBarrier
 \subsection{Modèle d'interaction de service}
 
@@ -528,21 +565,42 @@ Ce schéma détaille les séquences d’interaction entre les services. Par exem
 \section{Modèles architecturaux spécifiques aux services}
 
 \subsection{Service d’authentification : architecture en couches}
-L’architecture en couches sépare clairement les responsabilités :
+L’architecture en couches permet une séparation claire des responsabilités, améliorant la lisibilité, la testabilité et l’évolutivité du système.
 
-\begin{itemize}
-    \item La couche présentation valide les requêtes.
-    \item La couche métier implémente la logique (ex. hachage de mots de passe).
-    \item La couche données gère les opérations CRUD.
+\begin{itemize}[label=--]
+    \item \textbf{Présentation} : Valide les requêtes entrantes (ex. formats, en-têtes).
+    \item \textbf{Logique métier} : Implémente les règles fonctionnelles, telles que le hachage de mots de passe ou la génération de tokens.
+    \item \textbf{Accès aux données} : Gère les opérations CRUD via une abstraction avec Prisma.
 \end{itemize}
-
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1.1\textwidth]{diagrams/diagram2.png}
-    \caption{Service d’Authentification}
+    \caption{Architecture du service d’authentification}
     \label{fig:diagram2}
 \end{figure}
+
+\subsubsection*{Description technique}
+
+Ce service adopte une architecture stratifiée en quatre couches, conformément au pattern \textit{Clean Architecture}, intégrant le principe d’inversion des dépendances :
+
+\begin{itemize}[label=--]
+    \item \textbf{Présentation} : Requêtes HTTP, middlewares (CORS, sécurité).
+    \item \textbf{Logique métier} : Contrôleurs, services JWT, règles d’authentification.
+    \item \textbf{Accès aux données} : Prisma ORM pour l’abstraction des sources de données.
+    \item \textbf{Stockage} : PostgreSQL pour les données relationnelles, Redis pour le cache.
+\end{itemize}
+
+\subsubsection*{Analyse académique}
+
+\textbf{Pattern} : Architecture en couches avec inversion des dépendances (\textit{Layered Architecture + Dependency Inversion}).
+
+\textbf{Avantages} :
+\begin{itemize}[label=+]
+    \item \textbf{Testabilité} : Chaque couche peut être testée indépendamment.
+    \item \textbf{Maintenabilité} : Une évolution dans une couche n’affecte pas les autres.
+    \item \textbf{Flexibilité} : Possibilité de changer de base de données ou de framework sans refonte majeure.
+\end{itemize}
 
 \newpage
 \FloatBarrier
@@ -563,37 +621,74 @@ Ce diagramme applique les principes du Domain-Driven Design (DDD) :
 \end{figure}
 
 \FloatBarrier
-\subsection{Service de chat : architecture orientée événements }
+\subsection{Service de chat : architecture orientée événements}
 
-Le diagramme du service de chat illustre une architecture orientée événements conçue pour gérer les interactions entre utilisateurs dans un environnement de chat en temps réel. Cette architecture est pensée pour être évolutive, modulaire, et capable de supporter un grand nombre de connexions simultanées. Elle s’appuie sur l’utilisation de WebSockets pour assurer une communication bidirectionnelle et instantanée ainsi que sur un système d’événements pour coordonner les différents composants du service.
+Le diagramme du service de chat illustre une architecture orientée événements conçue pour gérer les interactions entre utilisateurs dans un environnement de chat en temps réel. Cette architecture est pensée pour être évolutive, modulaire, et capable de supporter un grand nombre de connexions simultanées. Elle s'appuie sur l'utilisation de WebSockets pour assurer une communication bidirectionnelle et instantanée ainsi que sur un système d'événements pour coordonner les différents composants du service.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.93\textwidth]{diagrams/diagram4.png}
+    \caption{Architecture Event-Driven du Service de Chat}
+    \label{fig:chat-service-architecture}
+\end{figure}
 
 \paragraph{Composants principaux}
 
+L'architecture du service de chat se compose de plusieurs éléments interconnectés qui collaborent pour offrir une expérience de messagerie instantanée :
+
 \begin{itemize}
-  \item \textbf{Utilisateurs (User A, User B)} \\
-  \item \textbf{WebSockets (WebSocket A, WebSocket B)} \\
-  Interfaces de communication en temps réel entre les utilisateurs et le serveur.
-
-  \item \textbf{Gestionnaire de connexions (Connection Manager)} \\
-  Composant chargé de gérer les connexions WebSocket, en enregistrant les connexions et déconnexions des utilisateurs, et en diffusant les mises à jour concernant la présence des utilisateurs.
-
-  \item \textbf{Gestionnaire de messages (Message Handler)} \\
-  Responsable de la réception, du traitement et de la diffusion des messages entre les participants au chat.
-
-  \item \textbf{Bus d’événements (Event Bus)} \\
-  Système de messagerie interne facilitant la communication entre les différents composants du service en transmettant les événements générés.
-
-  \item \textbf{Base de données (Database)} \\
-  Stockage persistant des messages et des informations de connexion, permettant la récupération, l’archivage et la gestion durable des données.
+    \item \textbf{Utilisateurs (User A, User B)} \\
+    Clients finaux qui initient les connexions WebSocket et échangent des messages via l'interface de chat.
+    
+    \item \textbf{WebSockets (WebSocket A, WebSocket B)} \\
+    Interfaces de communication en temps réel entre les utilisateurs et le serveur, maintenant des connexions persistantes bidirectionnelles pour un échange de données instantané.
+    
+    \item \textbf{Gestionnaire de connexions (Connection Manager)} \\
+    Composant chargé de gérer le cycle de vie des connexions WebSocket, en enregistrant les connexions et déconnexions des utilisateurs, et en diffusant les mises à jour concernant la présence des utilisateurs à travers le système.
+    
+    \item \textbf{Gestionnaire de messages (Message Handler)} \\
+    Responsable de la réception, du traitement, de la validation et de la diffusion des messages entre les participants au chat, incluant la gestion des accusés de réception et du stockage persistant.
+    
+    \item \textbf{Bus d'événements (Event Bus)} \\
+    Système de messagerie interne facilitant la communication asynchrone entre les différents composants du service en transmettant les événements typés (connexion, message, présence, déconnexion).
+    
+    \item \textbf{Base de données (Database)} \\
+    Stockage persistant des messages, historiques de conversation et informations de connexion, permettant la récupération, l'archivage et la gestion durable des données de communication.
 \end{itemize}
 
-\begin{figure}[htbp]
+\paragraph{Fonctionnement de l'architecture événementielle}
 
-    \includegraphics[width=0.93\textwidth]{diagrams/diagram4.png}
-    \caption{Service de Chat}
-    \label{fig:diagram4}
-\end{figure}
+L'architecture event-driven du service de chat représente une implémentation moderne de communication temps réel basée sur le pattern Event-Driven Architecture (EDA). Ce système utilise WebSocket pour maintenir des connexions persistantes bidirectionnelles entre les clients et le serveur, permettant une communication instantanée sans la latence des requêtes HTTP traditionnelles. 
 
+Le cœur de l'architecture repose sur un Event Bus qui découple les différents composants (WebSocket Manager, Connection Manager, Message Handler) en permettant une communication asynchrone via des événements typés. Lorsqu'un utilisateur se connecte, le système émet un événement \texttt{connection:added} qui déclenche une cascade d'actions : mise à jour du statut de présence, notification aux autres participants, et enregistrement de la connexion dans la base de données.
+
+\paragraph{Flux d'événements et types de traitement}
+
+Le système gère quatre catégories principales d'événements, chacune correspondant à un aspect spécifique de l'interaction utilisateur :
+
+\begin{description}
+    \item[Événements de connexion] Gestion de l'établissement et de la terminaison des sessions utilisateur, avec diffusion des mises à jour de présence aux participants connectés.
+    
+    \item[Événements de messagerie] Traitement des messages texte avec validation, stockage persistant, et diffusion aux destinataires concernés, incluant la gestion des accusés de réception.
+    
+    \item[Événements de présence] Indicateurs d'activité utilisateur tels que les notifications de frappe (\texttt{typing:start}), permettant une interaction plus naturelle et responsive.
+    
+    \item[Événements système] Gestion des erreurs, maintenance des connexions, et événements de monitoring pour assurer la robustesse du service.
+\end{description}
+
+\paragraph{Avantages architecturaux}
+
+Cette approche événementielle offre plusieurs avantages cruciaux pour un service de chat à grande échelle :
+
+\begin{itemize}
+    \item \textbf{Scalabilité horizontale} : Chaque gestionnaire d'événements peut être distribué sur plusieurs instances, permettant une montée en charge progressive selon les besoins.
+    
+    \item \textbf{Résilience} : La défaillance d'un composant n'affecte pas les autres grâce au découplage via le bus d'événements, assurant une continuité de service.
+    
+    \item \textbf{Extensibilité} : L'ajout de nouveaux types d'événements (notifications push, intégrations externes) s'intègre naturellement sans modification des composants existants.
+    
+    \item \textbf{Cohérence distribuée} : Le système maintient la cohérence des états distribués tout en assurant la livraison fiable des messages via la persistance en base de données et les mécanismes d'acknowledgment.
+\end{itemize}
 
 \FloatBarrier
 
@@ -611,11 +706,30 @@ Ce schéma UML montre les tables PostgreSQL et leurs relations :
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{diagrams/diagram5.png}
-    \caption{Schéma de Base de Données}
+    \includegraphics[width=1.0\textwidth]{diagrams/diagram5.png}
+    \caption{User Management and Research Groups Entity Relationship Diagram}
     \label{fig:diagram5}
 \end{figure}
 
+Ce premier schéma présente un système centré sur la gestion d'utilisateurs académiques et leurs interactions sociales. La table users constitue le cœur du système avec des informations complètes sur chaque utilisateur (identifiants, données personnelles, rôle, statut et affiliation). Le système permet aux utilisateurs de créer des liens sociaux via la table links, de recevoir des notifications personnalisées, et de former des groupes de recherche collaboratifs. La table de liaison group_user facilite l'appartenance multiple aux groupes, tandis que le système de notifications assure une communication efficace entre les membres.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{diagrams/diagram7.png}
+    \caption{Publications and Conferences Entity Relationship Diagram}
+    \label{fig:diagram5}
+\end{figure}
+
+Ce schéma se concentre sur la gestion des publications scientifiques et des conférences académiques. Les users peuvent soumettre des publications qui sont ensuite associées à des conferences spécifiques via la table de liaison conference_publications. Chaque publication peut inclure des fichiers annexes stockés dans publication_files, permettant de gérer documents, présentations et autres ressources. Les publications peuvent également appartenir à des groups de recherche, facilitant la collaboration institutionnelle. Cette structure permet de tracer l'évolution des travaux de recherche depuis leur soumission jusqu'à leur présentation en conférence, tout en maintenant les liens entre chercheurs, institutions et événements académiques.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{diagrams/diagram8.png}
+    \caption{Communication System Entity Relationship Diagram}
+    \label{fig:diagram5}
+\end{figure}
+
+Ce schéma implémente un système de communication sophistiqué basé sur les groupes de recherche. Les groups peuvent créer des conversations de différents types (discussions publiques, privées, annonces), permettant une communication structurée. Les users participent à ces conversations via la table conversation_participants qui définit leur rôle dans chaque discussion. Tous les messages échangés sont horodatés et traçables, avec un système de statut permettant de suivre leur lecture ou leur importance. Cette architecture favorise la collaboration en équipe en offrant des espaces de discussion dédiés à chaque groupe de recherche, tout en maintenant la flexibilité nécessaire pour différents types d'échanges académiques.
 
 \FloatBarrier
 \newpage
@@ -671,7 +785,20 @@ Ces éléments travaillent ensemble pour créer une architecture de sécurité r
     \label{fig:diagram6}
 \end{figure}
 
+\section{Conclusion}
+Ce chapitre a présenté la conception architecturale détaillée de notre plateforme de gestion de laboratoire de recherche, articulée autour de trois piliers fondamentaux : la gestion des publications, l’authentification sécurisée et la messagerie en temps réel. L’approche modulaire, combinant microservices et monolithe optimisé, a permis d’adapter chaque composant aux exigences spécifiques de son domaine, tout en garantissant une intégration harmonieuse de l’ensemble.
 
+\subsubsection*{Choix techniques clés}
+
+\begin{itemize}[label=--]
+    \item \textbf{Service de publications} : Architecture orientée domaine (DDD) assurant une modélisation fidèle des processus métier et une forte maintenabilité.
+    \item \textbf{Sécurité multi-couches} : Intégration de HTTPS, JWT, RBAC et chiffrement des données pour une protection à chaque niveau (frontend, réseau, backend).
+    \item \textbf{Messagerie en temps réel} : Communication événementielle via WebSockets et Event Bus, optimisant la latence et la cohérence des états utilisateurs.
+\end{itemize}
+
+Les schémas de base de données unifiés et les diagrammes d’interaction ont permis de visualiser la collaboration entre les services et leur contribution à une expérience utilisateur fluide, respectant les exigences de performance et de scalabilité.
+
+Cette conception robuste et documentée constitue la base du chapitre suivant, dédié à la mise en œuvre technique. Nous y détaillerons l’implémentation concrète, les défis rencontrés lors du développement, ainsi que les optimisations effectuées pour garantir robustesse et efficacité.
 
 \newpage
 
