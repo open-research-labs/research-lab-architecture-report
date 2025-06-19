@@ -2,12 +2,10 @@
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{1em}
 
-\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\geometry{a4paper, top=2cm, left=2.2cm, right=2.2cm , footskip=1cm}
 \setlength{\parskip}{0.5em}
 
-
 \usepackage{lmodern}
-\renewcommand{\rmdefault}{lmss}
 
 
 \usepackage{setspace}
@@ -26,18 +24,19 @@
 
 
 \usepackage{titlesec}
-\titlespacing{\section}{0pt}{2.5em}{1.5em}
-\titlespacing{\subsection}{0pt}{2em}{1em}
+\titlespacing{\section}{0pt}{2em}{1em}
+\titlespacing{\subsection}{0pt}{1em}{0.5em}
 \usepackage{tocloft}  % For customizing the table of contents
 \usepackage{hyperref} % For hyperlinks
+\hypersetup{plainpages=false, pdfpagelabels} % Helps with page numbering
 
 \title{Système de gestion d'un laboratoire de recherche}
 
 \begin{document}
 %----------- Initialisation -------------------
 
-\fairemarges
 \fairepagedegarde
+\fairemarges
 
 \newpage
 \thispagestyle{empty}
@@ -464,7 +463,6 @@ La conteneurisation grâce à Docker constitue l’un des piliers de l’infrast
 Voici un extrait commenté du fichier \texttt{docker-compose.yml} orchestrant les principaux services :
 
 
-\newpage
 \begin{minted}[frame=lines, linenos, fontsize=\scriptsize]{yaml}
 
 x-service-defaults: &service-defaults
@@ -973,7 +971,7 @@ Le modèle relationnel permet la création de liens sociaux via la table \texttt
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{diagrams/diagram7.png}
+    \includegraphics[width=0.9\textwidth]{diagrams/diagram7.png}
     \caption{Schéma entité-association — Publications scientifiques et conférences académiques}
     \label{fig:diagram7}
 \end{figure}
@@ -1460,5 +1458,9 @@ S.~Souders, \textit{High Performance Web Sites}. O'Reilly Media, 2007.
 OWASP Foundation, ``OWASP Cheat Sheet Series,'' 2023. [Online]. Available: \url{https://cheatsheetseries.owasp.org/}
 
 \end{thebibliography}
+
+\newpage
+\thispagestyle{empty}
+\null
 
 \end{document}

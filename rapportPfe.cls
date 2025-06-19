@@ -59,10 +59,12 @@
     \fancyhead[L]{\nouppercase{\leftmark}} % TOP LEFT
     \fancyhead[R]{} % TOP RIGHT
     \pagestyle{fancy}
+
 }
 
 \newcommand{\fairepagedegarde}{
 \begin{titlepage}
+\thispagestyle{empty} 
 \begin{center}
 \noindent {\large \textbf{UNIVERSITÉ MOHAMMED V DE RABAT}} \\
 \vspace*{0.3cm}
@@ -82,7 +84,7 @@
 \vspace*{0.8cm}
 \noindent {\Large \textbf{Système de gestion d'un laboratoire de recherche}} \\
 \vspace*{0.3cm}
-\noindent \Large Présenté par: \\  \textsc{Prénom Nom du binôme1 \item Prénom Nom du binôme2} \\
+\noindent \Large Présenté par: \\  \textsc{Ossama \textsc{El Khalfi} \item El Araby \textsc{El Mahdi}} \\
 \vspace*{0.2cm}
 \vspace*{0.2cm}
 \noindent \large soutenu le 10 Juin 2025 devant le Jury\\
