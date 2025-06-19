@@ -1,4 +1,17 @@
-\documentclass{rapportPfe}
+\documentclass[12pt]{rapportPfe}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{1em}
+
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\setlength{\parskip}{0.5em}
+
+
+\usepackage{lmodern}
+\renewcommand{\rmdefault}{lmss}
+
+
+\usepackage{setspace}
+\onehalfspacing 
 
 \usepackage[utf8]{inputenc}   
 \usepackage[T1]{fontenc}     
@@ -10,7 +23,11 @@
 \usepackage{minted}
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 
-\usepackage{titlesec} % For customizing chapter and section titles
+
+
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{2.5em}{1.5em}
+\titlespacing{\subsection}{0pt}{2em}{1em}
 \usepackage{tocloft}  % For customizing the table of contents
 \usepackage{hyperref} % For hyperlinks
 
@@ -109,67 +126,87 @@ Dans ce contexte, le développement d’une application web dédiée à la gesti
 
 %------------ Corps du rapport ----------------
 
+% Chapitre : Généralités sur le projet (version enrichie avec problèmes architecturaux)
 \chapter{Généralités sur le projet}
 
 \section{Problématique}
+La gestion efficace d’un laboratoire de recherche impose aujourd’hui de relever de multiples défis :
 
-La gestion efficace d’un laboratoire de recherche repose sur la coordination fluide des activités scientifiques, administratives et humaines. Pourtant, de nombreux laboratoires continuent d’utiliser des approches archaïques, souvent basées sur des outils génériques, peu adaptés à la complexité croissante de la recherche contemporaine. Cette situation engendre de nombreuses limites que nous analysons ci-dessous.
-
-\subsection{Une Gestion Manuelle Fragmentée et Source d’Incohérences}
-
-Les laboratoires s’appuient encore trop souvent sur des solutions non spécialisées comme les tableurs ou les échanges de courriels pour suivre les publications, projets, conférences et collaborations.
-
-\begin{itemize}
-  \item \textbf{Suivi imprécis et chronophage} : La saisie manuelle des données entraîne des erreurs fréquentes, une mise à jour fastidieuse et une perte de temps considérable, nuisant à la fiabilité du suivi scientifique.
-  \item \textbf{Données dispersées et non structurées} : Les informations sont stockées dans des fichiers multiples et non synchronisés, rendant difficile l’obtention d’une vue d’ensemble cohérente et à jour.
-  \item \textbf{Vulnérabilité accrue des données} : L’absence de protocoles robustes de sauvegarde et de sécurité expose les fichiers à des risques de perte, de corruption ou d’accès non autorisé.
+\subsection{Gestion Manuelle Fragmentée et Sources d’Incohérences}
+Les pratiques traditionnelles basées sur des tableurs et des courriels entraînent :
+\begin{itemize}[itemsep=1em]
+  \item \textbf{Saisie manuelle chronophage} : fréquentes erreurs de frappe, délais de mise à jour et perte de temps précieux.
+  \item \textbf{Informations éclatées} : données dispersées dans des fichiers et dossiers non synchronisés, rendant la consolidation lourde et peu fiable.
+  \item \textbf{Risques de corruption et de perte} : absence de sauvegardes et de versions contrôlées.
 \end{itemize}
 
-\subsection{Communication Désorganisée et Collaboration Sous-Exploitées}
-
-La réussite d’un laboratoire dépend de la qualité des échanges entre ses membres. Cependant, les outils de communication utilisés ne sont ni centralisés ni adaptés à un environnement scientifique.
-
-\begin{itemize}
-  \item \textbf{Canaux de communication éparpillés} : Entre messageries personnelles et échanges informels, la traçabilité et la conservation des discussions deviennent difficiles.
-  \item \textbf{Faible intégration des outils collaboratifs} : L'absence de solutions intégrées et spécialisées freine la coordination et crée des silos informationnels.
+\subsection{Communication Désorganisée et Collaboration Sous-Optimale}
+L’absence de plateforme centralisée crée des silos et fragmente les échanges :
+\begin{itemize}[itemsep=1em]
+  \item \textbf{Canaux disparates} : messageries personnelles, groupes informels, sans historique structuré.
+  \item \textbf{Faible adoption des outils collaboratifs} : documents partagés sans contrôle de version et sans annotations dédiées.
+  \item \textbf{Manque de traçabilité} : difficulté à retrouver l’historique des discussions et des décisions.
 \end{itemize}
 
-\subsection{Défauts de Sécurité et Faible Capacité d'Évolution}
-
-Les systèmes traditionnels, souvent construits de manière ad hoc, présentent des failles critiques.
-
-\begin{itemize}
-  \item \textbf{Contrôle d’accès rudimentaire} : La gestion des rôles et des permissions est inexistante ou limitée, ce qui compromet la confidentialité des données sensibles.
-  \item \textbf{Infrastructure hétérogène et difficile à maintenir} : La coexistence d’outils isolés rend la maintenance complexe, coûteuse et sujette aux pannes.
-  \item \textbf{Absence de scalabilité} : Ces systèmes ne sont pas conçus pour évoluer avec l’augmentation du nombre d’utilisateurs, de projets ou du volume de données, limitant leur durabilité.
+\subsection{Infrastructure Serveur, Performances et Scalabilité}
+Les architectures existantes souffrent de limitations critiques en termes de performance et d’évolution :
+\begin{itemize}[itemsep=1em]
+  \item \textbf{Serveurs monolithiques surchargés} : absence de découplage des services entraîne des temps de réponse élevés et des arrêts imprévus.
+  \item \textbf{Scalabilité limitée} : impossibilité de répartir la charge ou d’ajouter dynamiquement des nœuds, conduisant à des goulets d’étranglement.
+  \item \textbf{Absence de mise en cache} : chaque requête interroge directement la base de données, ralentissant considérablement le système.
+  \item \textbf{Pas d’automatisation du déploiement} : mises à jour manuelles et scripts artisanaux, sources d’erreurs et de délais prolongés.
 \end{itemize}
 
-\section{L’objectif à réaliser}
+\subsection{Sécurité et Conformité Insuffisantes}
+Les installations actuelles ne répondent pas aux standards modernes :
+\begin{itemize}[itemsep=1em]
+  \item \textbf{Protocoles obsolètes} : utilisation de TLS non à jour ou absence de chiffrement systématique des données en transit.
+  \item \textbf{Pare-feux et WAF manquants} : exposition directe des services web aux attaques externes.
+  \item \textbf{Pas de surveillance ni de logs centralisés} : impossibilité de détecter ou corréler les incidents en temps réel.
+  \item \textbf{Gestion des mises à jour laxiste} : systèmes non patchés régulièrement, vulnérabilités connues non corrigées.
+\end{itemize}
+
+\subsection{Problèmes d’Interopérabilité et d’Intégration}
+L’intégration de nouvelles fonctionnalités est souvent freinée par l’hétérogénéité des outils :
+\begin{itemize}[itemsep=1em]
+  \item \textbf{Formats propriétaires} : incompatibilités entre logiciels de gestion différents.
+  \item \textbf{Absence d’API standardisées} : difficulté à connecter les services tiers (bibliothèques, conférences, outils d’analyse).
+  \item \textbf{Coûts de maintenance élevés} : mises à jour manuelles et scripts personnalisés.
+\end{itemize}
+
+\subsection{Usabilité et Adoption Utilisateur}
+Les plateformes existantes sont souvent peu ergonomiques :
+\begin{itemize}[itemsep=1em]
+  \item \textbf{Courbe d’apprentissage élevée} : interfaces non intuitives pour les chercheurs.
+  \item \textbf{Faible taux d’adoption} : outils perçus comme lourds, manque de formation.
+  \item \textbf{Support limité} : peu de documentation et peu d’assistance intégrée.
+\end{itemize}
+
+\section{Objectifs du Projet}
 
 \subsection{Objectif Principal}
-Développer une application web centralisée, sécurisée, performante et ergonomique pour optimiser la gestion des laboratoires de recherche. Elle repose sur une architecture à microservices, une base de données PostgreSQL, et un outil d’intelligence artificielle en Python pour résumer automatiquement les publications scientifiques.
+Concevoir et développer une application web centralisée, sécurisée et évolutive pour la gestion d’un laboratoire de recherche, fondée sur une architecture microservices et une base de données PostgreSQL.
 
-\subsection{Fonctionnalités Principales}
-\begin{itemize}
-  \item \textbf{Suivi des publications et conférences} : Vision synthétique et historique complet, avec génération automatique de résumés via l’IA.
-  \item \textbf{Messagerie instantanée} : Communication en temps réel entre les membres.
-  \item \textbf{Gestion des droits d’accès} : Permissions avancées selon le rôle (administrateur, chercheur, responsable).
+\subsection{Fonctionnalités Clés}
+\begin{itemize}[itemsep=0.8em]
+  \item \textbf{Suivi des publications et conférences} avec génération automatique de résumés via IA.
+  \item \textbf{Messagerie instantanée} structurée et historisée.
+  \item \textbf{Gestion avancée des accès} (RBAC, journalisation, audits).
+  \item \textbf{Tableaux de bord analytiques} intégrés pour le pilotage.
+  \item \textbf{API RESTful} ouvertes pour interopérabilité.
 \end{itemize}
 
 \subsection{Objectifs Secondaires}
-\begin{itemize}
-  \item Automatiser les tâches pour libérer du temps.
-  \item Centraliser les échanges et favoriser la collaboration.
-  \item Assurer la pérennité, la sécurité et la traçabilité des données.
-  \item Créer une solution évolutive et maintenable sur le long terme.
+\begin{itemize}[itemsep=0.8em]
+  \item Automatiser les tâches répétitives pour gagner en productivité.
+  \item Centraliser les communications et garantir leur traçabilité.
+  \item Assurer la conformité RGPD et des normes de sécurité.
+  \item Mettre en place un support évolutif et modulaire pour futures extensions.
 \end{itemize}
 
-\section{Conclusion}
-Ce chapitre a mis en lumière les défis majeurs auxquels sont confrontés les laboratoires de recherche en matière de gestion, soulignant les limites des méthodes traditionnelles : fragmentation des données, communication désorganisée, insécurité et rigidité des systèmes existants. Face à ces enjeux, notre projet propose une solution innovante et intégrée, visant à moderniser la gestion des laboratoires grâce à une application web centralisée.
+\section{Conclusion du Chapitre}
+Ce chapitre a mis en évidence les limites des solutions actuelles : fragmentation, communications dispersées, architectures monolithiques lentes, sécurité insuffisante, difficultés d’intégration et usabilité réduite. Le cadrage des objectifs — principal et secondaires — fixe les bases d’un développement structuré, à même de répondre aux enjeux techniques, fonctionnels et réglementaires. La suite du document détaillera la spécification des exigences, l’architecture choisie et l’implémentation concrète du système.
 
-En adoptant une architecture microservices, une base de données robuste (PostgreSQL) et des technologies avancées (IA, WebSockets), notre plateforme répond aux besoins critiques d’automatisation, de collaboration et de sécurité. Les fonctionnalités principales (suivi des publications, messagerie instantanée, gestion des accès) et les objectifs secondaires (scalabilité, maintenance, traçabilité) ont été définis pour garantir un outil adapté aux exigences dynamiques de la recherche scientifique.
-
-Ce cadre posé, les chapitres suivants détailleront la spécification des besoins techniques, la conception architecturale et la mise en œuvre concrète du système, démontrant comment cette approche comble les lacunes identifiées tout en ouvrant la voie à de futures évolutions.
 
 
 \chapter{Spécification des besoins}
@@ -352,36 +389,163 @@ Utilisé dans le backend d’authentification pour faciliter l’accès à la ba
     \item \textbf{Transactions :} Support robuste avec gestion concurrente optimisée.
 \end{itemize}
 
-\section{Conteneurisation et orchestration : \texttt{Docker}}
+\section{Conteneurisation et orchestration : \texttt{Docker} et \texttt{Docker Compose}}
 
-Tous les services, y compris la base de données et les données mock, sont conteneurisés grâce à Docker et orchestrés avec Docker Compose.
+La conteneurisation grâce à Docker constitue l’un des piliers de l’infrastructure, offrant portabilité, isolation et reproductibilité des environnements. Docker Compose permet de définir et de lancer l’ensemble des services via un unique fichier YAML, simplifiant le cycle de vie des développements et des déploiements.
 
-\begin{itemize}
-    \item \textbf{Isolation complète :} Chaque service s’exécute dans un environnement indépendant, garantissant une isolation des processus et des dépendances.
-    \item \textbf{Portabilité et cohérence :} Les conteneurs peuvent être déployés sans modification sur des serveurs locaux, des environnements cloud, ou des clusters.
-    \item \textbf{Réseau flexible :} Gestion des adresses IP internes pour la communication inter-services, ainsi que des IP externes pour l’accès public contrôlé.
-    \item \textbf{Données mock intégrées :} Les données de test sont préchargées via des conteneurs dédiés pour faciliter le développement et les tests.
-    \item \textbf{Préparation à l’orchestration avancée :} La configuration est conçue pour une migration future vers Kubernetes, facilitant l’évolution et la montée en charge.
+\subsection{Principes fondamentaux de Docker}
+\begin{itemize}[itemsep=0.8em]
+  \item \textbf{Images légères et immuables} : Utilisation de multi-stage builds pour minimiser la taille des images et séparer les phases de compilation et d’exécution.
+  \item \textbf{Isolation des processus} : Chaque conteneur fonctionne dans un namespace indépendant, garantissant qu’un service n’impacte pas les autres.
+  \item \textbf{Gestion des volumes} : Montage de volumes Docker pour la persistance des données (logs, fichiers de configuration, dossiers de téléversement) en dehors du cycle de vie du conteneur.
+  \item \textbf{Réseaux Docker dédiés} : Création de réseaux bridge personnalisés pour segmenter la communication interne, appliquer des règles de firewall et éviter l’exposition directe des services.
 \end{itemize}
+
+\subsection{Bonnes pratiques Docker}
+\begin{itemize}[itemsep=0.8em]
+  \item \textbf{Multi-stage builds} : Séparation des phases de build et runtime pour ne conserver que l’essentiel dans l’image finale :
+  \begin{minted}[fontsize=\small,breaklines]{yaml}
+  FROM rust:1.64 AS builder
+  WORKDIR /app
+  COPY . .
+  RUN cargo build --release
+
+  FROM debian:bullseye-slim
+  COPY --from=builder /app/target/release/publish-service /usr/local/bin/
+  ENTRYPOINT ["/usr/local/bin/publish-service"]
+  \end{minted}
+  \item \textbf{Variables d’environnement et secrets} : Utiliser des fichiers ".env" ou Docker secrets pour injecter les mots de passe, clés JWT ou chaînes de connexion sans inclure ces données dans le code source.
+  \item \textbf{Healthchecks} : Définition d’une commande \texttt{HEALTHCHECK} dans le Dockerfile ou dans Docker Compose pour assurer la disponibilité du service :
+  \begin{minted}[fontsize=\small,breaklines]{dockerfile}
+  HEALTHCHECK --interval=30s --timeout=5s \
+    CMD curl -f http://localhost:8000/health || exit 1
+  \end{minted}
+  \item \textbf{Limitation des ressources} : Imposer des limites CPU et mémoire dans Docker Compose pour éviter qu’un service monopolisant ne déstabilise l’ensemble :
+  \begin{minted}[fontsize=\small,breaklines]{yaml}
+  services:
+    publish-service:
+      deploy:
+        resources:
+          limits:
+            cpus: "0.50"
+            memory: 512M
+  \end{minted}
+  \item \textbf{Restart policies} : Assurer la résilience automatique en cas de plantage via \texttt{restart: on-failure} ou \texttt{always} :
+  \begin{minted}[fontsize=\small,breaklines]{yaml}
+  restart: on-failure:3
+  \end{minted}
+\end{itemize}
+
+\subsection{Exemple de fichier \texttt{docker-compose.yml}}
+Voici un extrait commenté du fichier \texttt{docker-compose.yml} orchestrant les principaux services :
+
+
+\newpage
+\begin{minted}[frame=lines, linenos, fontsize=\scriptsize]{yaml}
+
+x-service-defaults: &service-defaults
+  restart: on-failure:3
+  networks:
+    - app_net
+
+services:
+  api-gateway:
+    <<: *service-defaults
+    image: myregistry/api-gateway:latest
+    ports: ["80:8080"]
+    environment:
+      NODE_ENV: production
+    secrets: [jwt_secret]
+
+  publish-service:
+    <<: *service-defaults
+    build: ./services/publish
+    ports: ["8000:8000"]
+    depends_on: [db, redis]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    <<: *service-defaults
+    image: redis:6-alpine
+    volumes: [redis-data:/data]
+
+  db:
+    <<: *service-defaults
+    image: postgres:13
+    environment:
+      POSTGRES_USER: lab_admin
+    secrets: [db_pass]
+    volumes: [pg-data:/var/lib/postgresql/data]
+
+volumes:
+  redis-data:
+  pg-data:
+
+networks:
+  app_net: {}
+  
+secrets:
+  jwt_secret:
+    file: ./secrets/jwt_secret.key
+  db_pass:
+    file: ./secrets/db_pass.txt
+\end{minted}
+
+\subsection{Déploiement et montée en charge}
+\begin{itemize}[itemsep=0.8em]
+  \item \textbf{Snapshots d’environnement} : Versionnement des images Docker via tags sémantiques (semver) pour garantir la reproductibilité des déploiements.
+  \item \textbf{Mise à l’échelle horizontale} : Utilisation de la commande \texttt{docker-compose up --scale service=3} pour multiplier les réplicas d’un service lors des phases de charge élevée.
+  \item \textbf{Intégration CI/CD} : Automatisation du build et du push des images via des pipelines (GitHub Actions, GitLab CI) avec tests de sécurité (scans d’images) et audit.
+  \item \textbf{Stratégies de rollback} : Conservation des dernières images stables et scripts de rollback automatisé en cas d’échec du déploiement.
+\end{itemize}
+
+% \section{Conclusion}
+% Ce chapitre a détaillé les besoins techniques et l’implémentation de l’infrastructure de conteneurisation, en mettant l’accent sur Docker et Docker Compose. Les bonnes pratiques présentées garantissent une plateforme résiliente, évolutive et sécurisée, tout en facilitant le développement et la maintenance au quotidien. La maîtrise de ces outils constitue un levier majeur pour l’efficacité opérationnelle du système et prépare sa future migration vers des orchestrateurs plus avancés (Kubernetes, Nomad).
 
 \newpage
 \section{Intégration d'une intelligence artificielle : \texttt{Python}}
+Le module d’intelligence artificielle doit permettre la synthèse automatique et l’extraction d’insights à partir de documents PDF ou d’autres corpus textuels via une interface WebSocket en temps réel. Les besoins fonctionnels et non fonctionnels sont détaillés ci-dessous.
 
-Python est utilisé pour le développement des modules d’intelligence artificielle grâce à son écosystème riche et ses bibliothèques avancées de traitement du langage naturel.
-
-\begin{itemize}
-    \item \textbf{API web performante :} Utilisation de FastAPI pour exposer des API RESTful et gérer des connexions WebSocket, assurant une communication réactive et scalable.
-    \item \textbf{Traitement avancé des documents :} Extraction et analyse de contenu PDF pour alimenter les modèles d’IA.
-    \item \textbf{Modèles de NLP :} Implémentation de modèles pré-entraînés de génération et résumé automatique de texte, appuyée par des techniques de tokenisation et prétraitement linguistique.
-    \item \textbf{Interopérabilité et maintenabilité :} Architecture modulaire facilitant l’intégration avec les autres composants du système et simplifiant la maintenance.
+\subsection{Besoins fonctionnels}
+\begin{itemize}[itemsep=0.8em]
+  \item \textbf{Endpoint WebSocket} : 
+    \begin{itemize}
+      \item URL : \texttt{/ws/summarize}
+      \item Protocole : WebSocket, en réception de chemin de fichier et en envoi de segments de résumé.
+      \item Flux attendu :
+        \begin{enumerate}
+          \item Client envoie le \\path du PDF à traiter.
+          \item Serveur valide l’existence du fichier (sinon renvoie \texttt{"ERROR: File not found."}).
+          \item Serveur exécute la fonction \texttt{summarize\_pdf(path)} et renvoie chaque segment de résumé sous la forme : 
+            \texttt{"Part <n>:<contenu>"} suivi d’un message \texttt{"DONE"}.
+          \item En cas d’exception, renvoyer \texttt{"ERROR: <message>"}.
+        \end{enumerate}
+    \end{itemize}
+  \item \textbf{Paramétrage minimal} : gestion des variables d’environnement pour définir le modèle LLM (ex. \texttt{MODEL\_NAME}), le seuil de tokens par chunk (\texttt{MAX\_CHUNK\_TOKENS}) et le prompt.
+  \item \textbf{Formats supportés} : PDF (texte natif) avec extraction via \texttt{pypdf}. Les formats DOCX et TXT doivent être convertis en interne avant traitement.
 \end{itemize}
 
+\subsection{Besoins non fonctionnels}
+\begin{itemize}[itemsep=0.8em]
+  \item \textbf{Performance} : capacité à renvoyer chaque segment (< 150 tokens) en moins de 1 s.
+  \item \textbf{Scalabilité} : support de 10 connexions WebSocket simultanées, redondance par pool de workers (processus Python) et fallback sur modèle plus léger.
+  \item \textbf{Sécurité et confidentialité} :
+    \begin{itemize}
+      \item TLS obligatoire pour les connexions WebSocket (wss://).
+      \item Authentification JWT préalable, gérée par l’API Gateway.
+      \item Suppression des fichiers temporaires et logs après traitement.
+    \end{itemize}
+  \item \textbf{Fiabilité} : reconnect automatique côté client en cas de déconnexion et politique de retry côté serveur (max 3 tentatives pour une même tâche).
+\end{itemize}
 \section{Comparaison des Architectures : Monolithique vs Microservices}
 
-L’architecture générale de l’application adopte un modèle hybride. Les fonctionnalités principales (gestion des publications, authentification, etc.) reposent sur une architecture microservices, tandis que le serveur de messagerie instantanée est développé selon une structure monolithique. Cette section présente une comparaison critique entre ces deux paradigmes, dans le contexte spécifique de notre système.
+L'architecture générale de l'application adopte un modèle hybride, une décision stratégique mûrement réfléchie pour optimiser la performance et la maintenabilité de chaque composant. Les fonctionnalités principales, telles que la gestion des publications, le système d'authentification des utilisateurs et la gestion des données, reposent sur une architecture \textbf{microservices}. Cette approche modulaire offre une flexibilité et une résilience accrues pour les parties critiques du système. En contraste, le serveur de messagerie instantanée, en raison de ses exigences uniques en matière de latence et de cohérence en temps réel, est développé selon une structure \textbf{monolithique}. Cette section présente une comparaison critique et approfondie entre ces deux paradigmes, dans le contexte spécifique de notre système et les compromis inhérents à chaque choix.
 
 \subsection{Tableau comparatif des caractéristiques}
-
 
 \begin{table}[H]
 \centering
@@ -411,6 +575,66 @@ Vitesse de développement & Autonomie par équipe/service & Rapidité dans un en
 \caption{Comparaison des caractéristiques entre Monolithique et Microservices}
 \label{tab:Arch-comp}
 \end{table}
+
+\subsection{Analyse Approfondie des Critères}
+
+\subsubsection{Organisation du Code}
+
+Dans l'architecture \textbf{microservices} adoptée pour le cœur de l'application, le code est partitionné en \textbf{services indépendants et faiblement couplés}. Chaque service est responsable d'une fonctionnalité métier spécifique (par exemple, un service d'authentification, un service de gestion des publications, un service de recherche). Cette granularité permet aux équipes de développer et de maintenir ces services de manière autonome. L'utilisation de différents langages de programmation tels que \textbf{Rust} pour les services critiques nécessitant des performances élevées (par exemple, le traitement d'images ou la gestion de grandes quantités de données), \textbf{Node.js} pour les API web légères et réactives, et \textbf{Python} pour les tâches de traitement de données ou d'intelligence artificielle, est un atout majeur. Cela nous permet de choisir le meilleur outil pour chaque tâche, optimisant ainsi l'efficacité du développement et la performance finale.
+
+À l'inverse, le \textbf{serveur de chat monolithique} centralise tout son code dans un \textbf{seul bloc d'application}. Bien que cela simplifie l'organisation initiale en regroupant toutes les fonctionnalités de chat (gestion des sessions, envoi/réception de messages, historique) dans un seul dépôt et un seul projet, cela signifie également que toute modification, même mineure, dans une partie du chat, nécessite potentiellement la recompilation et le redéploiement de l'intégralité du serveur. Ce choix est justifié par la nature intrinsèque d'une application de chat en temps réel, où la communication interne entre les composants doit être la plus rapide possible, minimisant ainsi les latences induites par les appels réseau entre services.
+
+\subsubsection{Scalabilité}
+
+La \textbf{scalabilité horizontale par service} est l'un des principaux avantages de l'approche \textbf{microservices}. Lorsqu'un service particulier (par exemple, le service de gestion des publications) connaît une forte demande, nous pouvons augmenter uniquement le nombre d'instances de ce service, sans affecter les autres. Cela permet une utilisation plus efficace des ressources et une adaptation agile aux pics de charge spécifiques à chaque fonctionnalité. La conteneurisation avec \textbf{Docker} facilite grandement cette scalabilité en permettant le déploiement rapide et isolé de nouvelles instances de services.
+
+Pour le \textbf{serveur de chat monolithique}, la scalabilité est principalement \textbf{verticale}, c'est-à-dire en augmentant les ressources (CPU, RAM) de l'unique instance de serveur. Bien qu'il soit possible d'utiliser des techniques de load balancing pour répartir la charge sur plusieurs instances du monolithe, chaque instance gère toujours l'intégralité du code du chat. Pour les applications de messagerie instantanée, la gestion des connexions persistantes (WebSockets) et la garantie d'une faible latence pour chaque message sont cruciales. Une approche monolithique peut simplifier la gestion de l'état des connexions et la coordination des messages entre utilisateurs connectés à la même instance, minimisant ainsi la complexité de la distribution de l'état.
+
+\subsubsection{Déploiement}
+
+Le \textbf{déploiement autonome de chaque service} est une caractéristique clé des \textbf{microservices}. Chaque service est packagé dans son propre conteneur \textbf{Docker} et peut être déployé, mis à jour ou redémarré indépendamment des autres. Cette autonomie réduit les risques de régression lors des déploiements et permet des cycles de livraison plus rapides pour des fonctionnalités spécifiques. Les équipes peuvent travailler et déployer leurs services sans attendre ou être bloquées par les déploiements d'autres équipes.
+
+Le \textbf{déploiement unique en un seul paquet} du serveur de chat monolithique simplifie initialement le processus. Il n'y a qu'un seul artéfact à construire, tester et déployer. Cependant, chaque mise à jour, même mineure, de n'importe quelle partie du chat nécessite le redéploiement de l'ensemble de l'application, ce qui peut entraîner des temps d'arrêt plus longs ou une fenêtre de déploiement plus contrainte, surtout si le chat est une fonctionnalité essentielle avec une haute disponibilité requise.
+
+\subsubsection{Complexité}
+
+L'adoption des \textbf{microservices} introduit une \textbf{complexité accrue} en termes de gestion du réseau, d'orchestration des services, de gestion des identités et de surveillance distribuée. La communication entre services via des API, la résilience face aux pannes réseau, la traçabilité des requêtes à travers plusieurs services et la gestion des versions des API sont des défis significatifs. Des outils et pratiques robustes sont nécessaires pour gérer cette complexité.
+
+Le serveur de chat \textbf{monolithique} bénéficie d'une \textbf{complexité initiale réduite}. L'absence de communication réseau entre composants internes simplifie la conception et le débogage. Tout se passe au sein du même processus, ce qui est plus facile à comprendre et à gérer au début du projet. Cependant, à mesure que le monolithe grandit, sa complexité interne peut augmenter de manière exponentielle, devenant un "big ball of mud" difficile à maintenir et à faire évoluer sans introduire de régressions. Ce n'est pas le cas pour notre serveur de chat qui ne devrait pas grandir démesurément.
+
+\subsubsection{Performance}
+
+Les \textbf{microservices} permettent une \textbf{optimisation spécifique à chaque service}. Par exemple, un service intensif en calcul peut être optimisé avec Rust, tandis qu'un service d'API peut être optimisé pour la réactivité avec Node.js. Cela permet d'allouer les ressources de manière plus précise et d'obtenir des performances optimales pour chaque composant métier, ce qui est crucial pour les différentes facettes de notre application principale.
+
+Le serveur de chat \textbf{monolithique} est choisi pour sa \textbf{faible latence pour les traitements en temps réel}. Pour une application de messagerie, la rapidité de transmission des messages est primordiale. En regroupant toutes les logiques de communication au sein d'un seul processus, les surcharges liées aux appels réseau entre services sont éliminées, garantissant une transmission quasi instantanée des messages et une expérience utilisateur fluide.
+
+\subsubsection{Cohérence des Données}
+
+La gestion de la \textbf{cohérence des données} dans une architecture \textbf{microservices} est un défi. Chaque service peut avoir sa propre base de données, ce qui nécessite des mécanismes complexes comme les transactions distribuées (patterns Saga) pour maintenir la cohérence à travers les services lors d'opérations qui impliquent plusieurs d'entre eux. Cela exige une conception minutieuse et une gestion robuste des erreurs.
+
+Le serveur de chat \textbf{monolithique} bénéficie d'une \textbf{cohérence forte des données} grâce à l'utilisation d'une base de données unique partagée par tous ses composants. Les transactions ACID sont plus faciles à implémenter, garantissant que toutes les opérations sur les données sont atomiques, cohérentes, isolées et durables. Cela simplifie grandement la logique métier liée à la gestion des messages et de l'état des conversations.
+
+\subsubsection{Liberté Technologique}
+
+L'architecture \textbf{microservices} offre une \textbf{liberté technologique} inégalée. Chaque équipe peut choisir les technologies, les langages et les frameworks les plus appropriés pour son service spécifique, en fonction des exigences de performance, de la disponibilité des compétences et de la nature du problème à résoudre. Comme mentionné, l'utilisation de Rust, Node.js et Python en est un exemple parfait.
+
+Le serveur de chat \textbf{monolithique} est \textbf{restreint à l'écosystème Node.js}. Bien que Node.js soit excellent pour les applications en temps réel grâce à son modèle événementiel non bloquant et ses capacités WebSockets natives, cette restriction signifie que toutes les fonctionnalités du chat doivent être implémentées avec les technologies Node.js, ce qui peut ne pas être optimal pour toutes les sous-tâches si le monolithe devait s'étendre au-delà de son périmètre actuel.
+
+\subsubsection{Isolation des Pannes}
+
+Un avantage majeur des \textbf{microservices} est l'\textbf{isolation des pannes}. Si un service tombe en panne, il est peu probable que cela affecte l'ensemble de l'application. Les défaillances sont circonscrites à un seul service, et les autres peuvent continuer à fonctionner normalement. Des mécanismes de circuit breaker et de retry peuvent être mis en place pour améliorer la résilience.
+
+En revanche, dans une architecture \textbf{monolithique}, un \textbf{risque de panne globale} existe en cas de crash du serveur. Une seule erreur non gérée ou une surcharge importante peut faire tomber l'intégralité de l'application de chat, rendant le service indisponible pour tous les utilisateurs. Cela souligne la nécessité d'une robustesse exceptionnelle et de tests approfondis pour les applications monolithiques critiques.
+
+\subsubsection{Vitesse de Développement}
+
+Avec les \textbf{microservices}, l'\textbf{autonomie par équipe/service} peut accélérer la vitesse de développement globale. Les équipes peuvent travailler en parallèle sur différents services sans se marcher sur les pieds, réduisant les dépendances et les goulots d'étranglement. Cela favorise également l'innovation et l'expérimentation avec de nouvelles technologies au sein de services isolés.
+
+Le serveur de chat \textbf{monolithique} peut offrir une \textbf{rapidité dans un environnement centralisé} au début du projet. Sans les complexités de la communication distribuée et de l'orchestration, le développement initial peut être plus rapide et plus simple. Cependant, à mesure que l'application grandit, la vitesse peut ralentir en raison de la complexité croissante du code base et des dépendances internes.
+
+---
+
+En conclusion, le choix d'une \textbf{architecture hybride} pour notre application n'est pas un hasard. Il représente un équilibre réfléchi entre les avantages intrinsèques des microservices pour la gestion des fonctionnalités évolutives et variées de l'application principale, et la simplicité, la performance et la faible latence qu'offre une architecture monolithique pour un composant aussi critique que le serveur de messagerie instantanée. Cette approche nous permet de capitaliser sur les forces de chaque paradigme, tout en atténuant leurs faiblesses respectives, afin de construire un système robuste, évolutif et performant répondant aux besoins spécifiques de notre plateforme.
 
 \subsection{Choix des microservices pour le cœur applicatif}
 
