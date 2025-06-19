@@ -1,5 +1,11 @@
 \documentclass{rapportPfe}
 
+\usepackage[utf8]{inputenc}   
+\usepackage[T1]{fontenc}     
+\usepackage[french]{babel} 
+
+
+\usepackage{enumitem}
 \usepackage{url}
 \usepackage[Lenny]{fncychap} % Ou try Lenny, Bjarne, Glenn, etc.
 \usepackage{lipsum}
@@ -306,7 +312,7 @@ Le système de cache Redis expose plusieurs métriques clés pour le monitoring 
     \item \textbf{Évictions} : Suivi des suppressions automatiques selon la politique LRU configurée.
 \end{itemize}
 
-\section{Serveur de communication en temps réel (chat) : \texttt{Node.js} avec WebSockets}
+\section{Serveur de communication en temps réel (chat) : Node.js avec WebSockets}
 
 Ce service permet des communications bidirectionnelles en temps réel.
 
@@ -604,6 +610,7 @@ Ce service adopte une architecture stratifiée en quatre couches, conformément 
 
 \newpage
 \FloatBarrier
+
 \subsection{Service de publication : conception pilotée par le domaine}
 Ce diagramme applique les principes du Domain-Driven Design (DDD) :
 
@@ -711,7 +718,7 @@ Ce schéma UML montre les tables PostgreSQL et leurs relations :
     \label{fig:diagram5}
 \end{figure}
 
-Ce premier schéma présente un système centré sur la gestion d'utilisateurs académiques et leurs interactions sociales. La table users constitue le cœur du système avec des informations complètes sur chaque utilisateur (identifiants, données personnelles, rôle, statut et affiliation). Le système permet aux utilisateurs de créer des liens sociaux via la table links, de recevoir des notifications personnalisées, et de former des groupes de recherche collaboratifs. La table de liaison group_user facilite l'appartenance multiple aux groupes, tandis que le système de notifications assure une communication efficace entre les membres.
+Ce premier schéma présente un système centré sur la gestion d'utilisateurs académiques et leurs interactions sociales. La table users constitue le cœur du système avec des informations complètes sur chaque utilisateur (identifiants, données personnelles, rôle, statut et affiliation). Le système permet aux utilisateurs de créer des liens sociaux via la table links, de recevoir des notifications personnalisées, et de former des groupes de recherche collaboratifs. La table de liaison group\_user facilite l'appartenance multiple aux groupes, tandis que le système de notifications assure une communication efficace entre les membres.
 
 \begin{figure}[htbp]
     \centering
@@ -720,7 +727,7 @@ Ce premier schéma présente un système centré sur la gestion d'utilisateurs a
     \label{fig:diagram5}
 \end{figure}
 
-Ce schéma se concentre sur la gestion des publications scientifiques et des conférences académiques. Les users peuvent soumettre des publications qui sont ensuite associées à des conferences spécifiques via la table de liaison conference_publications. Chaque publication peut inclure des fichiers annexes stockés dans publication_files, permettant de gérer documents, présentations et autres ressources. Les publications peuvent également appartenir à des groups de recherche, facilitant la collaboration institutionnelle. Cette structure permet de tracer l'évolution des travaux de recherche depuis leur soumission jusqu'à leur présentation en conférence, tout en maintenant les liens entre chercheurs, institutions et événements académiques.
+Ce schéma se concentre sur la gestion des publications scientifiques et des conférences académiques. Les users peuvent soumettre des publications qui sont ensuite associées à des conferences spécifiques via la table de liaison conference\_publications. Chaque publication peut inclure des fichiers annexes stockés dans publication\_files, permettant de gérer documents, présentations et autres ressources. Les publications peuvent également appartenir à des groups de recherche, facilitant la collaboration institutionnelle. Cette structure permet de tracer l'évolution des travaux de recherche depuis leur soumission jusqu'à leur présentation en conférence, tout en maintenant les liens entre chercheurs, institutions et événements académiques.
 
 \begin{figure}[htbp]
     \centering
@@ -729,7 +736,7 @@ Ce schéma se concentre sur la gestion des publications scientifiques et des con
     \label{fig:diagram5}
 \end{figure}
 
-Ce schéma implémente un système de communication sophistiqué basé sur les groupes de recherche. Les groups peuvent créer des conversations de différents types (discussions publiques, privées, annonces), permettant une communication structurée. Les users participent à ces conversations via la table conversation_participants qui définit leur rôle dans chaque discussion. Tous les messages échangés sont horodatés et traçables, avec un système de statut permettant de suivre leur lecture ou leur importance. Cette architecture favorise la collaboration en équipe en offrant des espaces de discussion dédiés à chaque groupe de recherche, tout en maintenant la flexibilité nécessaire pour différents types d'échanges académiques.
+Ce schéma implémente un système de communication sophistiqué basé sur les groupes de recherche. Les groups peuvent créer des conversations de différents types (discussions publiques, privées, annonces), permettant une communication structurée. Les users participent à ces conversations via la table \texttt{conversation\_participants} qui définit leur rôle dans chaque discussion. Tous les messages échangés sont horodatés et traçables, avec un système de statut permettant de suivre leur lecture ou leur importance. Cette architecture favorise la collaboration en équipe en offrant des espaces de discussion dédiés à chaque groupe de recherche, tout en maintenant la flexibilité nécessaire pour différents types d'échanges académiques.
 
 \FloatBarrier
 \newpage
