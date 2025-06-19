@@ -19,23 +19,6 @@
 \title{Système de gestion d'un laboratoire de recherche}
 
 \begin{document}
-
-%----------- Informations du rapport ---------
-
-\titre{Système de gestion d'un laboratoire de recherche}
-\sujet{Projet de Fin d'Année}
-
-\enseignant{Professeur  \textsc{Khawla Asmi}}
-
-\eleves{%
-    El Araby \textsc{El Mahdi} \\
-    Ossama \textsc{El Khalfi}
-}
-
-\jury{%
-    Professeur \textsc{Soukaina Bouarourou}
-}
-
 %----------- Initialisation -------------------
 
 \fairemarges
@@ -124,7 +107,7 @@ Dans ce contexte, le développement d’une application web dédiée à la gesti
 \listoffigures
 
 \newpage
-\listoffigures % liste des tableaux utilise
+\listoftables
 
 %------------ Corps du rapport ----------------
 
@@ -197,10 +180,14 @@ L’architecture backend de cette application repose sur une conception modulair
 
 \section{Vue d'ensemble de l'architecture}
 L'architecture proposée s'articule autour de sept composants principaux, chacun optimisé pour répondre à des exigences spécifiques de performance, sécurité et maintenabilité. Le tableau suivant présente une synthèse des technologies retenues et de leur justification :
-\begin{tabular}{| >{\raggedright\arraybackslash}p{4cm} 
-                | >{\raggedright\arraybackslash}p{3cm} 
-                | >{\raggedright\arraybackslash}p{5cm} 
-                | >{\raggedright\arraybackslash}p{5cm} |}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{| >{\raggedright\arraybackslash}p{3cm} 
+                | >{\raggedright\arraybackslash}p{2.5cm} 
+                | >{\raggedright\arraybackslash}p{4cm} 
+                | >{\raggedright\arraybackslash}p{4cm} |}
+
 \hline
 \textbf{Service} & \textbf{Technologie} & \textbf{Justification principale} & \textbf{Avantages clés} \\
 \hline
@@ -219,6 +206,9 @@ Persistance & PostgreSQL & Intégrité et fonctionnalités avancées & ACID, JSO
 Intelligence artificielle & Python + FastAPI & Écosystème ML/NLP & Bibliothèques spécialisées, rapidité de prototypage \\
 \hline
 \end{tabular}
+\caption{Choix technologiques pour chaque composant du système}
+\label{tab:choix-tech}
+\end{table}
 
 \section{Service de gestion des publications et conférences : \texttt{Rust}}
 

@@ -38,7 +38,7 @@
 \titleformat{\section}
   {\normalfont\Large\bfseries}{\thesection}{1em}{}
 %-------------------- Informations sur le rapport ----------------------
-
+ \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \newcommand{\UE}[1]{\renewcommand{\UE}{#1}}
 \newcommand{\sujet}[1]{\renewcommand{\sujet}{#1}}
 \newcommand{\titre}[1]{\renewcommand{\titre}{#1}}
@@ -63,49 +63,46 @@
 
 \newcommand{\fairepagedegarde}{
 \begin{titlepage}
+\begin{center}
+\noindent {\large \textbf{UNIVERSITÉ MOHAMMED V DE RABAT}} \\
+\vspace*{0.3cm}
+\noindent {\Huge \textbf{Faculté des Sciences }} \\
+\vspace*{1cm}
+\includegraphics[scale=.30]{./logos/LogoFsr.png}
+\vspace*{1cm}
+\noindent \LARGE \textbf{\\Département d'Informatique}
+\vspace*{.5cm}
+\noindent \Large \textbf{\\Filière Licence Fondamentale \\ en Sciences Mathématiques et Informatique} 
+\vspace*{.5cm}
+\HRule \\[0.1cm]
+    { \huge \bfseries PROJET DE FIN D'ÉTUDES \\[0.1cm] }
+    \HRule \\[0.2cm]
+\vspace*{0.4cm}
+\noindent \large {Intitulé :}
+\vspace*{0.8cm}
+\noindent {\Large \textbf{Système de gestion d'un laboratoire de recherche}} \\
+\vspace*{0.3cm}
+\noindent \Large Présenté par: \\  \textsc{Prénom Nom du binôme1 \item Prénom Nom du binôme2} \\
+\vspace*{0.2cm}
+\vspace*{0.2cm}
+\noindent \large soutenu le 10 Juin 2025 devant le Jury\\
+\vspace*{0.5cm}
+\end{center}
+\noindent \large 
+\begin{tabular}{lll}
 
-\ThisLRCornerWallPaper{1}{logos/background.png}
-	
-    %\vspace{-2cm}
-    %\includegraphics[width=0.2\textwidth]{logos/um5logo.png}
-    %\hfill
-    \centering %Centraliser le contenu
-    %\hspace{-2cm}
-	\includegraphics[width=0.3\textwidth]{logos/um5logo.png}\par\vspace{1cm} %Insertion du logo
-	{\scshape\LARGE Université Mohammed V - Rabat \par} %Nom de l'université
-	\vspace{1.5cm}%Espace de 1,5cm
-	{\scshape\Large \UE \par \sujet \par} %sous-titre
-	\vspace{1cm}%Espace de 1cm
-    \rule{\linewidth}{0.2 mm} \par \vspace{0.4cm}
-	{\huge\bfseries \titre \par}
-    \rule{\linewidth}{0.2 mm} \par \vspace{1.5cm}
-	\vspace{1cm}%Espace de 3cm
-    
-	\begin{minipage}{0.5\textwidth} % Minipage pour faire deux colonnes
-            \begin{flushleft} \large % Envoyer à gauche
-            \textbf{Élèves :}\par % Pour le titre au dessus des noms à gauche
-            \eleves\par % Remplacer pour chacun
-            \end{flushleft}
-        \end{minipage}
-        ~
-        \begin{minipage}{0.4\textwidth}
-            \begin{flushright} \large
-            \textbf{Encadrant :} \par
-             \enseignant \par
-            \end{flushright}
-        \end{minipage}
-        ~
-        \par
-        \begin{minipage}{0.4\textwidth}
-            \begin{center} \large
-            \textbf{Jury :} \par
-             \jury \par
-            \end{center}
-        \end{minipage}
-        \vfill
-        {\large Année Universitaire 2024-2025\par}
+Pr. Soukaina Bouarourou   &  Faculté des Sciences - Rabat & \textit{Président}	\\
+Pr. Khawla Asmi   &  Faculté des Sciences - Rabat & \textit{Encadrant}	\\
 
+\end{tabular}
+\vfill
+\begin{center}
+Année Universitaire 2024-2025
+\end{center}
 \end{titlepage}
+\sloppy
+
+\titlepage
 }
 
 \newcommand{\tabledematieres}{
