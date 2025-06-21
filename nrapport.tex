@@ -38,10 +38,6 @@
 \fairepagedegarde
 \fairemarges
 
-\newpage
-\thispagestyle{empty}
-\null
-\newpage
 %-------------- Pages préliminaires --------------
 
 \chapter*{Remerciements}
@@ -58,10 +54,6 @@ Nous souhaitons aussi exprimer notre reconnaissance envers toutes les personnes 
 
 Enfin, nous tenons à remercier chaleureusement nos familles et nos amis pour leur soutien inconditionnel, leur patience et leur motivation tout au long de cette période. Leur présence et leur bienveillance ont été une véritable source de force et de persévérance.
 
-\newpage
-\thispagestyle{empty}
-\null
-\newpage
 
 \chapter*{Résumé}
 \addcontentsline{toc}{chapter}{Résumé}
@@ -73,10 +65,6 @@ Ce projet s’inscrit dans le cadre du projet de fin d’études (PFE) à la Fac
 
 À travers ce travail, nous détaillerons nos choix technologiques (Node.js , Typscript , Next.js, Docker), les défis rencontrés (orchestration de microservices, synchronisation des données) et les résultats obtenus , tout en soulignant l’apport de cette solution dans l’amélioration de la productivité et de la coordination inter-équipes au sein des infrastructures de recherche.
 
-\newpage
-\thispagestyle{empty}
-\null
-\newpage
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
@@ -87,11 +75,6 @@ Our application is built on a microservices architecture, a modular and scalable
 This project is part of a final-year thesis (PFE) at the Faculty of Sciences in Rabat, combining both technical challenges (full-stack development, relational database management, access security) and domain-specific issues related to scientific research.
 
 Through this work, we detail our technology choices (Node.js , Typscript , Next.js, Docker), the challenges encountered (microservices orchestration, data synchronization), and the results achieved, while highlighting the contribution of this solution in improving productivity and inter-team coordination within research infrastructures.
-
-\newpage
-\thispagestyle{empty}
-\null
-\newpage
 
 \chapter*{Liste des Abréviations}
 	\addcontentsline{toc}{chapter}{Liste des Abréviations}
@@ -123,6 +106,17 @@ Through this work, we detail our technology choices (Node.js , Typscript , Next.
 	  \item \textbf{CI/CD} : Intégration Continue / Déploiement Continu
 	\end{itemize}
 
+\newpage
+\thispagestyle{empty}
+\tabledematieres
+
+\newpage
+\thispagestyle{empty}
+\listoffigures
+
+\newpage
+\thispagestyle{empty}
+\listoftables
 
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
@@ -134,19 +128,6 @@ Actuellement, de nombreux laboratoires recourent à des méthodes de gestion tra
 Dans ce contexte, le développement d’une application web dédiée à la gestion des laboratoires de recherche s’impose comme une solution incontournable. Une telle plateforme permettrait d’automatiser les processus répétitifs, de structurer la collaboration et d’assurer une meilleure traçabilité des données, tout en renforçant la sécurité et l’accessibilité de l’information.
 
 
-\newpage
-\thispagestyle{empty}
-\null
-\newpage
-
-\tabledematieres
-
-\newpage
-\listoffigures
-
-\newpage
-\listoftables
-
 %------------ Corps du rapport ----------------
 
 % Chapitre : Généralités sur le projet (version enrichie avec problèmes architecturaux)
@@ -155,7 +136,7 @@ Dans ce contexte, le développement d’une application web dédiée à la gesti
 \section{Problématique}
 La gestion efficace d’un laboratoire de recherche impose aujourd’hui de relever de multiples défis :
 
-\subsection{Gestion Manuelle Fragmentée et Sources d’Incohérences}
+\subsection*{Gestion Manuelle Fragmentée et Sources d’Incohérences}
 Les pratiques traditionnelles basées sur des tableurs et des courriels entraînent :
 \begin{itemize}[itemsep=1em]
   \item \textbf{Saisie manuelle chronophage} : fréquentes erreurs de frappe, délais de mise à jour et perte de temps précieux.
@@ -163,7 +144,7 @@ Les pratiques traditionnelles basées sur des tableurs et des courriels entraîn
   \item \textbf{Risques de corruption et de perte} : absence de sauvegardes et de versions contrôlées.
 \end{itemize}
 
-\subsection{Communication Désorganisée et Collaboration Sous-Optimale}
+\subsection*{Communication Désorganisée et Collaboration Sous-Optimale}
 L’absence de plateforme centralisée crée des silos et fragmente les échanges :
 \begin{itemize}[itemsep=1em]
   \item \textbf{Canaux disparates} : messageries personnelles, groupes informels, sans historique structuré.
@@ -171,7 +152,7 @@ L’absence de plateforme centralisée crée des silos et fragmente les échange
   \item \textbf{Manque de traçabilité} : difficulté à retrouver l’historique des discussions et des décisions.
 \end{itemize}
 
-\subsection{Infrastructure Serveur, Performances et Scalabilité}
+\subsection*{Infrastructure Serveur, Performances et Scalabilité}
 Les architectures existantes souffrent de limitations critiques en termes de performance et d’évolution :
 \begin{itemize}[itemsep=1em]
   \item \textbf{Serveurs monolithiques surchargés} : absence de découplage des services entraîne des temps de réponse élevés et des arrêts imprévus.
@@ -180,7 +161,7 @@ Les architectures existantes souffrent de limitations critiques en termes de per
   \item \textbf{Pas d’automatisation du déploiement} : mises à jour manuelles et scripts artisanaux, sources d’erreurs et de délais prolongés.
 \end{itemize}
 
-\subsection{Sécurité et Conformité Insuffisantes}
+\subsection*{Sécurité et Conformité Insuffisantes}
 Les installations actuelles ne répondent pas aux standards modernes :
 \begin{itemize}[itemsep=1em]
   \item \textbf{Protocoles obsolètes} : utilisation de TLS non à jour ou absence de chiffrement systématique des données en transit.
@@ -189,7 +170,7 @@ Les installations actuelles ne répondent pas aux standards modernes :
   \item \textbf{Gestion des mises à jour laxiste} : systèmes non patchés régulièrement, vulnérabilités connues non corrigées.
 \end{itemize}
 
-\subsection{Problèmes d’Interopérabilité et d’Intégration}
+\subsection*{Problèmes d’Interopérabilité et d’Intégration}
 L’intégration de nouvelles fonctionnalités est souvent freinée par l’hétérogénéité des outils :
 \begin{itemize}[itemsep=1em]
   \item \textbf{Formats propriétaires} : incompatibilités entre logiciels de gestion différents.
@@ -197,7 +178,7 @@ L’intégration de nouvelles fonctionnalités est souvent freinée par l’hét
   \item \textbf{Coûts de maintenance élevés} : mises à jour manuelles et scripts personnalisés.
 \end{itemize}
 
-\subsection{Usabilité et Adoption Utilisateur}
+\subsection*{Usabilité et Adoption Utilisateur}
 Les plateformes existantes sont souvent peu ergonomiques :
 \begin{itemize}[itemsep=1em]
   \item \textbf{Courbe d’apprentissage élevée} : interfaces non intuitives pour les chercheurs.
@@ -227,7 +208,7 @@ Concevoir et développer une application web centralisée, sécurisée et évolu
   \item Mettre en place un support évolutif et modulaire pour futures extensions.
 \end{itemize}
 
-\section{Conclusion du Chapitre}
+\section{Conclusion}
 Ce chapitre a mis en évidence les limites des solutions actuelles : fragmentation, communications dispersées, architectures monolithiques lentes, sécurité insuffisante, difficultés d’intégration et usabilité réduite. Le cadrage des objectifs — principal et secondaires — fixe les bases d’un développement structuré, à même de répondre aux enjeux techniques, fonctionnels et réglementaires. La suite du document détaillera la spécification des exigences, l’architecture choisie et l’implémentation concrète du système.
 
 
@@ -237,7 +218,9 @@ Ce chapitre a mis en évidence les limites des solutions actuelles : fragmentati
 L’architecture backend de cette application repose sur une conception modulaire et distribuée, mettant l’accent sur la séparation claire des responsabilités. Cette méthode vise à maximiser la facilité de maintenance, la possibilité d’évolution indépendante des services, ainsi que la robustesse globale du système. Chaque service, dédié à une fonction métier spécifique, est développé avec la technologie la plus appropriée à ses besoins, tout en s’intégrant harmonieusement dans l’ensemble de l’écosystème applicatif.
 
 \section{Vue d'ensemble de l'architecture}
-L'architecture proposée s'articule autour de sept composants principaux, chacun optimisé pour répondre à des exigences spécifiques de performance, sécurité et maintenabilité. Le tableau suivant présente une synthèse des technologies retenues et de leur justification :
+L'architecture proposée s'articule autour de sept composants principaux, chacun optimisé pour répondre à des exigences spécifiques de performance, sécurité et maintenabilité.
+
+Le tableau suivant présente une architecture système distribuée moderne privilégiant les performances et la sécurité à travers des choix technologiques stratégiques. L'utilisation de Rust pour la gestion des publications garantit une vitesse native sans ramasse-miettes, tandis que Node.js avec TypeScript assure un développement rapide et sécurisé pour l'authentification. Redis optimise les accès en cache avec des temps de réponse sub-millisecondes, et la combinaison Next.js/TypeScript permet un rendu côté serveur performant. PostgreSQL fournit l'intégrité transactionnelle et les capacités de recherche textuelle avancées, complétée par Python et FastAPI pour l'intégration d'intelligence artificielle, créant ainsi un écosystème technologique cohérent et performant.
 
 \begin{table}[ht]
 \centering
@@ -320,6 +303,8 @@ Multi-factor (MFA) & Très élevée & Élevée & Comptes privilégiés \\
 \label{tab:auth-aupported}
 \end{table}
 
+Cette analyse comparative des mécanismes d'authentification révèle un spectre de solutions adaptées à différents contextes sécuritaires et opérationnels. Les JWT offrent un équilibre optimal entre sécurité modérée et simplicité d'implémentation pour les API REST et applications web modernes, tandis qu'OAuth 2.0 fournit une sécurité maximale au prix d'une complexité accrue pour les intégrations tierces. L'authentification par session reste pertinente pour les applications web classiques grâce à sa simplicité, et l'authentification multi-facteurs s'impose comme standard pour les comptes privilégiés nécessitant une protection renforcée, illustrant la nécessité d'adapter la stratégie d'authentification aux exigences spécifiques de chaque contexte applicatif.
+
 \section{Service de cache des publications : Redis}
 
 Redis est intégré comme solution de cache haute performance pour optimiser l'accès aux données de publications fréquemment consultées, réduisant ainsi la charge sur la base de données principale et améliorant significativement les temps de réponse.
@@ -359,6 +344,8 @@ Refresh-ahead & 2 heures & Publications populaires & 90--95\% \\
 \caption{Stratégies de cache}
 \label{tab:cache-stratg}
 \end{table}
+
+Les stratégies de cache présentées  dans le tableau démontrent une approche différenciée selon les patterns d'accès et les exigences de fraîcheur des données. Le cache-aside avec une durée de vie d'une heure optimise l'accès aux publications récentes avec un taux de succès élevé, tandis que le write-through privilégie la cohérence des métadonnées critiques sur 24 heures. Le write-behind traite efficacement les statistiques d'accès avec une cohérence éventuelle, et le refresh-ahead maintient proactivement les contenus populaires en cache pour maximiser les performances. Cette diversification des stratégies permet d'adapter finement les performances du système aux caractéristiques spécifiques de chaque type de données et à leurs patterns d'utilisation.
 
 \subsection{Métriques de performance du cache}
 
@@ -528,7 +515,6 @@ secrets:
 % \section{Conclusion}
 % Ce chapitre a détaillé les besoins techniques et l’implémentation de l’infrastructure de conteneurisation, en mettant l’accent sur Docker et Docker Compose. Les bonnes pratiques présentées garantissent une plateforme résiliente, évolutive et sécurisée, tout en facilitant le développement et la maintenance au quotidien. La maîtrise de ces outils constitue un levier majeur pour l’efficacité opérationnelle du système et prépare sa future migration vers des orchestrateurs plus avancés (Kubernetes, Nomad).
 
-\newpage
 \section{Intégration d'une intelligence artificielle : \texttt{Python}}
 Le module d’intelligence artificielle doit permettre la synthèse automatique et l’extraction d’insights à partir de documents PDF ou d’autres corpus textuels via une interface WebSocket en temps réel. Les besoins fonctionnels et non fonctionnels sont détaillés ci-dessous.
 
@@ -568,6 +554,8 @@ Le module d’intelligence artificielle doit permettre la synthèse automatique 
 L'architecture générale de l'application adopte un modèle hybride, une décision stratégique mûrement réfléchie pour optimiser la performance et la maintenabilité de chaque composant. Les fonctionnalités principales, telles que la gestion des publications, le système d'authentification des utilisateurs et la gestion des données, reposent sur une architecture \textbf{microservices}. Cette approche modulaire offre une flexibilité et une résilience accrues pour les parties critiques du système. En contraste, le serveur de messagerie instantanée, en raison de ses exigences uniques en matière de latence et de cohérence en temps réel, est développé selon une structure \textbf{monolithique}. Cette section présente une comparaison critique et approfondie entre ces deux paradigmes, dans le contexte spécifique de notre système et les compromis inhérents à chaque choix.
 
 \subsection{Tableau comparatif des caractéristiques}
+
+Le tableau suivant est une comparaison architecturale qui illustre les compromis fondamentaux entre simplicité opérationnelle et flexibilité technique dans la conception de systèmes distribués. Les microservices offrent une autonomie technologique, une scalabilité granulaire et une isolation des pannes supérieures, mais au prix d'une complexité accrue en termes de déploiement, d'orchestration et de cohérence des données. L'architecture monolithique privilégie la simplicité de développement, le déploiement unifié et les performances intra-processus, tout en limitant la flexibilité technologique et la scalabilité. Le choix entre ces approches doit s'aligner sur la maturité organisationnelle, les contraintes opérationnelles et les exigences de performance spécifiques, reflétant l'évolution naturelle des systèmes vers plus de complexité distribuée.
 
 \begin{table}[H]
 \centering
@@ -718,7 +706,7 @@ Limite de scalabilité & Externalisation possible de l’état (Redis) & Non app
 \section{Conclusion}
 Ce chapitre a permis de définir une architecture technique ciblée, alliant performance, modularité et évolutivité pour répondre aux exigences complexes des laboratoires de recherche. Notre approche hybride tire parti des atouts complémentaires des microservices (pour les modules critiques comme la gestion des publications) et d'une architecture monolithique optimisée (pour la messagerie en temps réel), offrant ainsi un équilibre idéal entre flexibilité et cohérence.
 
-Les choix technologiques stratégiques — Rust pour le traitement haute performance, Node.js/TypeScript pour les APIs sécurisées, PostgreSQL pour l’intégrité des données, et Python pour l’IA — garantissent une base robuste, tandis que des solutions comme Redis (cache) et Docker (conteneurisation) optimisent l’efficacité opérationnelle. Les benchmarks initiaux confirment des gains significatifs : réduction de 75\,\% des temps de réponse pour les requêtes fréquentes et diminution de 60\,\% de la charge sur la base de données.
+Les choix technologiques stratégiques — Rust pour le traitement haute performance, Node.js/TypeScript pour les APIs sécurisées, PostgreSQL pour l’intégrité des données, et Python pour l’intelligence artificielle — garantissent une base robuste, tandis que des solutions comme Redis (cache) et Docker (conteneurisation) optimisent l’efficacité opérationnelle. Les benchmarks initiaux confirment des gains significatifs : réduction de 75\,\% des temps de réponse pour les requêtes fréquentes et diminution de 60\,\% de la charge sur la base de données.
 
 Enfin, cette architecture est conçue pour grandir avec les besoins :
 
@@ -1308,12 +1296,11 @@ Le module publications comprend des fonctionnalités avancées :
     \label{fig:ai_summary}
 \end{figure}
 
-L'interface d'IA démontre les capacités avancées du système :
+L'interface d'intelligence artificielle démontre les capacités avancées du système :
 \begin{itemize}
     \item \textbf{Résumés automatiques} : Génération de synthèses à partir du contenu des publications PDF
-    \item \textbf{Analyse sémantique} : Extraction des concepts clés et des contributions principales
+    \item \textbf{Analyse sémantique} : Extraction des concepts clés 
     \item \textbf{Interface de révision} : Possibilité d'éditer et valider les résumés générés
-    \item \textbf{Indicateurs de qualité} : Score de confiance et métriques sur la précision du résumé
 \end{itemize}
 
 \subsubsection{Système de messagerie instantanée}
@@ -1356,7 +1343,7 @@ Ce projet constitue une réponse concrète aux défis de gestion des laboratoire
 \paragraph{Défis et solutions}
 \begin{itemize}
     \item \textbf{Coordination microservices} : API Gateway, standards REST
-    \item \textbf{Performance IA} : Redis cache + traitement async
+    \item \textbf{Performance } : Redis cache + traitement async
     \item \textbf{Technologies multiples} : documentation, apprentissage continu
 \end{itemize}
 
@@ -1370,7 +1357,7 @@ Ce projet constitue une réponse concrète aux défis de gestion des laboratoire
 
 \paragraph{Perspectives}
 \begin{itemize}
-    \item Amélioration IA (modèles GPT-4)
+    \item Amélioration modele Intelligence artificielle (modèles GPT-4)
     \item Dashboards analytiques (D3.js)
     \item CI/CD avec GitHub Actions, monitoring Prometheus
     \item Modules futurs : gestion de projets, revue par pairs, intégration PubMed
