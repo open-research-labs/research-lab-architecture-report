@@ -59,7 +59,7 @@ Au terme de ce travail, nous tenons à exprimer notre profonde gratitude à tout
 
 Nos remerciements les plus sincères s’adressent en premier lieu à notre encadrante, Pr. Khawla Asmi, pour le temps qu’elle nous a consacré, la qualité de son accompagnement, ses conseils avisés et sa disponibilité tout au long de ce projet. Son expertise et son soutien constant ont été déterminants pour mener à bien ce travail.
 
-Nous remercions également les membres du jury notamment Pr. Soukaina Bouarourou pour l’attention portée à notre mémoire, leurs remarques constructives et leur contribution à l’enrichissement de cette recherche.
+Nous remercions également les membres du jury notamment Pr. Soukaina Bouarourou pour l’attention portée à notre mémoire, ses remarques constructives et sa contribution à l’enrichissement de cette recherche.
 
 Nos vifs remerciements vont également à l’ensemble des enseignants et intervenants de la Faculté des Sciences de Rabat, pour la qualité de leur enseignement et leur engagement dans notre formation. Leur accompagnement nous a permis d’acquérir les connaissances et les compétences nécessaires à la réalisation de ce projet.
 
@@ -82,11 +82,11 @@ Ce projet s’inscrit dans le cadre du projet de fin d’études (PFE) à la Fac
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-This thesis presents the design and development of a centralized management system for research laboratories, aiming to address the shortcomings of traditional methods, which are often manual and fragmented. Faced with challenges in efficiency, traceability, and cybersecurity, our solution proposes an integrated platform that automates administrative processes, enhances scientific collaboration, and ensures secure handling of sensitive data.
+This graduation project presents the design and development of a centralized management system for research laboratories, aiming to address the shortcomings of traditional methods, which are often manual and fragmented. Faced with challenges in efficiency, traceability, and cybersecurity, our solution proposes an integrated platform that automates administrative processes, enhances scientific collaboration, and ensures secure handling of sensitive data.
 
 Our application is built on a microservices architecture, a modular and scalable approach that improves maintainability, ensures component independence, and allows for adaptability to the dynamic needs of research labs. Each service (user management, scientific publication tracking, instant messaging, etc.) operates autonomously while communicating via REST APIs, ensuring flexibility and resilience, with a security layer based on JWT and encryption.
 
-This project is part of a final-year thesis (PFE) at the Faculty of Sciences in Rabat, combining both technical challenges (full-stack development, relational database management, access security) and domain-specific issues related to scientific research.
+This project is part of a final-year graduation project (PFE) at the Faculty of Sciences in Rabat, combining both technical challenges (full-stack development, relational database management, access security) and domain-specific issues related to scientific research.
 
 Through this work, we detail our technology choices (Node.js , Typscript , Next.js, Docker), the challenges encountered (microservices orchestration, data synchronization), and the results achieved, while highlighting the contribution of this solution in improving productivity and inter-team coordination within research infrastructures.
 
@@ -707,6 +707,8 @@ Limite de scalabilité & Externalisation possible de l’état (Redis) & Non app
 \label{tab:prob_solut}
 \end{table}
 
+Le tableau 2.5 présente une analyse comparative des enjeux techniques et des stratégies d’atténuation entre une architecture microservices et une approche monolithique, mettant en évidence les solutions spécifiques à chaque paradigme. Pour la communication interservices, les microservices s’appuient sur des mécanismes distribués tels qu’une API Gateway ou des protocoles REST, tandis que le monolithe bénéficie de communications en mémoire, simplifiées mais non applicables en contexte distribué. La cohérence des données est assurée par des patterns avancés comme Saga ou Event Sourcing dans les microservices, contrairement aux transactions ACID classiques du monolithe. La complexité opérationnelle est mitigée côté microservices via des outils d’orchestration (Docker Compose) et une documentation unifiée, alors que le monolithe privilégie des déploiements uniques et des scripts simples. Enfin, la scalabilité des microservices peut être optimisée par l’externalisation de l’état (Redis), une problématique inexistante dans le monolithe. Ce tableau synthétise ainsi les compromis inhérents à chaque architecture, offrant une base pour des décisions techniques éclairées.
+
 \subsection{Axes d’évolution prévus}
 
 \begin{itemize}
@@ -915,7 +917,7 @@ L'architecture du service de chat se compose de plusieurs éléments interconnec
 
 \paragraph{Fonctionnement de l'architecture événementielle}
 
-L'architecture event-driven du service de chat représente une implémentation moderne de communication temps réel basée sur le pattern Event-Driven Architecture (EDA). Ce système utilise WebSocket pour maintenir des connexions persistantes bidirectionnelles entre les clients et le serveur, permettant une communication instantanée sans la latence des requêtes HTTP traditionnelles. 
+L'architecture event-driven du service de chat (Voir Figure 3.5) représente une implémentation moderne de communication temps réel basée sur le pattern Event-Driven Architecture (EDA). Ce système utilise WebSocket pour maintenir des connexions persistantes bidirectionnelles entre les clients et le serveur, permettant une communication instantanée sans la latence des requêtes HTTP traditionnelles. 
 
 Le cœur de l'architecture repose sur un Event Bus qui découple les différents composants (WebSocket Manager, Connection Manager, Message Handler) en permettant une communication asynchrone via des événements typés. Lorsqu'un utilisateur se connecte, le système émet un événement \texttt{connection:added} qui déclenche une cascade d'actions : mise à jour du statut de présence, notification aux autres participants, et enregistrement de la connexion dans la base de données.
 
@@ -1070,6 +1072,49 @@ Cette conception robuste et documentée constitue la base du chapitre suivant, d
 
 Ce chapitre présente la concrétisation technique du projet, détaillant les outils, méthodologies et défis rencontrés lors du développement. Nous exposons d’abord la gestion collaborative du code via GitHub, puis les stratégies de test des API (Postman) et des WebSockets (wscat). La conteneurisation avec Docker et la gestion des bases de données avec DBeaver illustrent notre approche industrialisée. Une section dédiée à la méthodologie Agile met en lumière l’organisation itérative du travail, tandis que les retours utilisateurs et captures d’écran valident l’ergonomie et la performance de l’application. Enfin, nous analysons les limites identifiées et les pistes d’optimisation pour une future montée en charge.
 
+\section{Méthodologie de Développement}
+\subsubsection{Approche Agile Adoptée}
+Le projet a suivi une méthodologie \textbf{Agile} adaptée aux contraintes académiques et à la taille réduite de l'équipe. Cette approche a été structurée en sprints courts de deux semaines, avec une répartition claire des responsabilités techniques.
+
+\paragraph{Principes Appliqués :}
+\begin{itemize}
+    \item \textbf{Développement itératif} : livraisons fonctionnelles toutes les deux semaines avec démonstrations à l'encadrant
+    \item \textbf{Collaboration intensive} : réunions de synchronisation régulières pour coordonner les intégrations entre services
+    \item \textbf{Répartition par microservice} : chaque membre était responsable d’un microservice spécifique (authentification, publications, IA, chat), garantissant autonomie et spécialisation
+    \item \textbf{Mises à jour continues} : chaque service était maintenu et amélioré indépendamment, avec intégration progressive via Docker Compose
+    \item \textbf{Priorité au logiciel fonctionnel} : chaque sprint visait un livrable testable plutôt qu'une documentation exhaustive
+\end{itemize}
+
+
+\paragraph{Organisation des sprints :}
+\begin{itemize}
+    \item \textbf{Sprint 1} : Architecture, Docker, auth Node.js
+    \item \textbf{Sprint 2} : API Rust pour publications, téléversement
+    \item \textbf{Sprint 3} : Frontend Next.js, responsive design
+    \item \textbf{Sprint 4} : Chat WebSocket, intégration IA, tests
+\end{itemize}
+
+\subsubsection{Comparaison Agile vs Waterfall}
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Critère} & \textbf{Agile (choisi)} & \textbf{Waterfall (rejeté)} \\
+\hline
+Flexibilité & Adaptable en cours de route & Coûteux à modifier \\
+\hline
+Retours & Continus & Tardifs \\
+\hline
+Livraisons & Incrémentales & Un bloc final \\
+\hline
+Documentation & Juste suffisante & Exhaustive dès le début \\
+\hline
+\end{tabular}
+\caption{Comparaison de Méthodologie de Développement}
+\label{tab:compare-meth}
+\end{table}
+
+
 \section{Gestion du code source et collaboration : GitHub}
 
 Le choix de GitHub comme plateforme d’hébergement du code source et de collaboration a grandement contribué à industrialiser notre processus de développement, en alignant nos pratiques avec les standards professionnels actuels.
@@ -1191,48 +1236,6 @@ Docker a été un pilier de notre mise en œuvre, assurant la cohérence des env
     \item Préparation facilitée à la scalabilité et à l’intégration future avec Kubernetes.
     \item Intégration possible avec GitHub Actions pour automatiser les builds et tests continus.
 \end{itemize}
-
-\section{Méthodologie de Développement}
-\subsubsection{Approche Agile Adoptée}
-Le projet a suivi une méthodologie \textbf{Agile} adaptée aux contraintes académiques et à la taille réduite de l'équipe. Cette approche a été structurée en sprints courts de deux semaines, avec une répartition claire des responsabilités techniques.
-
-\paragraph{Principes Appliqués :}
-\begin{itemize}
-    \item \textbf{Développement itératif} : livraisons fonctionnelles toutes les deux semaines avec démonstrations à l'encadrant
-    \item \textbf{Collaboration intensive} : réunions de synchronisation régulières pour coordonner les intégrations entre services
-    \item \textbf{Répartition par microservice} : chaque membre était responsable d’un microservice spécifique (authentification, publications, IA, chat), garantissant autonomie et spécialisation
-    \item \textbf{Mises à jour continues} : chaque service était maintenu et amélioré indépendamment, avec intégration progressive via Docker Compose
-    \item \textbf{Priorité au logiciel fonctionnel} : chaque sprint visait un livrable testable plutôt qu'une documentation exhaustive
-\end{itemize}
-
-
-\paragraph{Organisation des sprints :}
-\begin{itemize}
-    \item \textbf{Sprint 1} : Architecture, Docker, auth Node.js
-    \item \textbf{Sprint 2} : API Rust pour publications, téléversement
-    \item \textbf{Sprint 3} : Frontend Next.js, responsive design
-    \item \textbf{Sprint 4} : Chat WebSocket, intégration IA, tests
-\end{itemize}
-
-\subsubsection{Comparaison Agile vs Waterfall}
-\begin{table}[ht]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Critère} & \textbf{Agile (choisi)} & \textbf{Waterfall (rejeté)} \\
-\hline
-Flexibilité & Adaptable en cours de route & Coûteux à modifier \\
-\hline
-Retours & Continus & Tardifs \\
-\hline
-Livraisons & Incrémentales & Un bloc final \\
-\hline
-Documentation & Juste suffisante & Exhaustive dès le début \\
-\hline
-\end{tabular}
-\caption{Comparaison de Méthodologie de Développement}
-\label{tab:compare-meth}
-\end{table}
 
 \section{Défis technologiques : Intégration Full-Stack et Intelligence Artificielle}
 
@@ -1498,8 +1501,19 @@ Ce projet constitue une réponse concrète aux défis de gestion des laboratoire
 
 \newpage
 \chapter*{Conclusion Générale}
-\addcontentsline{toc}{chapter}{Conclusion Générale}
-Ce projet s’inscrit dans une volonté d’améliorer la gestion des activités de recherche à travers une plateforme centralisée.Il pose les bases d'un écosystème digital unifié pour la recherche, conciliant technologie, ergonomie et productivité scientifique. Grâce à une architecture moderne basée sur des microservices, une base de données PostgreSQL, une interface intuitive et une sécurité renforcée, l’application répond aux besoins croissants des laboratoires universitaires. Les perspectives d’évolution incluent l’intégration d’outils analytiques avancés et l’extension vers d’autres structures de recherche.
+Le système de gestion de laboratoire que nous avons développé présente de nombreux avantages. Il centralise l’ensemble des processus administratifs, scientifiques et collaboratifs dans une seule plateforme, tout en assurant la sécurité, la traçabilité et la performance. Grâce à une architecture microservices, chaque module fonctionne de manière autonome et peut évoluer indépendamment, rendant l’ensemble du système plus maintenable, scalable et résilient. L’intégration d’une intelligence artificielle pour la synthèse automatique des publications académiques constitue également une valeur ajoutée significative, en optimisant la productivité des chercheurs.
+
+Sur le plan technique, ce projet nous a permis de maîtriser l’utilisation de technologies modernes telles que Node.js, Rust, Next.js, PostgreSQL, Redis, Docker et Python avec FastAPI. Nous avons appris à concevoir une architecture distribuée, à implémenter des API REST sécurisées avec JWT, à déployer des services conteneurisés, et à gérer l’authentification, la communication temps réel via WebSockets, et l’orchestration de services. Le développement full-stack en environnement modulaire nous a familiarisés avec les principes de CI/CD, l’optimisation des performances, et l’intégration de modules IA.
+
+Cependant, plusieurs défis ont été rencontrés. L’orchestration des microservices a exigé une coordination rigoureuse pour garantir la cohérence des données et la stabilité du système. L’interopérabilité entre services hétérogènes a posé des difficultés, en particulier lors de la mise en place de communications asynchrones. La gestion fine des états WebSocket, la sécurisation des accès distribués et la supervision du système ont également représenté des points sensibles. Enfin, le déploiement de l’IA nécessitait une gestion prudente des ressources pour maintenir de bonnes performances.
+
+Pour garantir une meilleure élasticité du système et répondre aux exigences de déploiement en production, une migration vers une architecture orientée services cloud-native est envisagée. L’orchestration des conteneurs via un orchestrateur de type cluster manager (Kubernetes) permettra une scalabilité horizontale automatique, une haute disponibilité des services, ainsi qu’un déploiement continu sans interruption (rolling updates). L’adoption d’un maillage de services (service mesh) comme Linkerd assurera la gestion du trafic interservices, l’authentification mutuelle (mTLS), et la télémétrie détaillée (traces, métriques, logs).
+
+La supervision du système sera consolidée par l’intégration d’une pile d’observabilité centralisée : Prometheus (monitoring), Grafana (visualisation de métriques), Loki (gestion de logs) et Alertmanager (alertes). Ces outils permettront une instrumentation fine du comportement des microservices, une détection automatique des anomalies et une traçabilité complète des incidents, favorisant ainsi le diagnostic en temps réel. Des stratégies de résilience comme les retry policies, les circuit breakers (via Istio ou Hystrix) et le rate limiting viendront renforcer la tolérance aux fautes.
+
+Du côté fonctionnel, le module d’intelligence artificielle pourra être enrichi avec des modèles de traitement automatique du langage (LLM) open-source comme LLaMA ou Mistral, via une intégration Python (FastAPI, Transformers). Les cas d’usage incluront la génération de résumés contextuels, la détection de similarités inter-publications, la classification automatique par domaine de recherche, et la suggestion de collaborateurs via analyse sémantique. Le support multilingue sont également envisagés.
+
+Enfin, pour favoriser l’interopérabilité et l’intégration dans l’écosystème académique, une API REST standardisée (OpenAPI/Swagger) sera mise à disposition, permettant l’interconnexion avec des plateformes tierces (ex : bibliothèques numériques, systèmes d’archivage, services bibliométriques). Cette ouverture positionnera le système non plus comme une simple application locale, mais comme un nœud central dans l’infrastructure numérique de la recherche.
 
 \newpage
 \bibliographystyle{plain}
