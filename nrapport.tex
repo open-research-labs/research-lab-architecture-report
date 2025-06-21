@@ -7,6 +7,19 @@
 
 \usepackage{lmodern}
 
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  frame=single,
+  captionpos=b,
+  language=Python
+}
 
 \usepackage{setspace}
 \onehalfspacing 
@@ -61,10 +74,11 @@ Ce mémoire présente la conception et le développement d’un système central
 
 Notre application s’appuie sur une architecture microservices, une approche modulaire et scalable qui permet une meilleure maintenabilité, une indépendance des composants et une évolutivité adaptée aux besoins dynamiques des laboratoires. Chaque service (gestion des utilisateurs, gestion de publications scientifiques, service de messagerie instantanée, etc.) fonctionne de manière autonome tout en communiquant via des API REST, assurant ainsi flexibilité et résilience, avec une couche de sécurité basée sur JWT et chiffrement.
 
-Ce projet s’inscrit dans le cadre du projet de fin d’études (PFE) à la Faculté des Sciences de Rabat, et combine à la fois des enjeux techniques (développement full-stack, gestion de bases de données relationnelles, sécurisation des accès ) et des problématiques métier propres à la recherche scientifique.
+Un aspect innovant de ce projet est l'intégration d'une intelligence artificielle (IA) pour la génération automatique de résumés à partir de documents de recherche (voir Figure 4.9). Ce module, développé en Python avec FastAPI, permet de synthétiser les publications académiques et d'extraire des insights pertinents, améliorant ainsi la productivité des chercheurs.
 
-À travers ce travail, nous détaillerons nos choix technologiques (Node.js , Typscript , Next.js, Docker), les défis rencontrés (orchestration de microservices, synchronisation des données) et les résultats obtenus , tout en soulignant l’apport de cette solution dans l’amélioration de la productivité et de la coordination inter-équipes au sein des infrastructures de recherche.
+Ce projet s’inscrit dans le cadre du projet de fin d’études (PFE) à la Faculté des Sciences de Rabat, et combine à la fois des enjeux techniques (développement full-stack, gestion de bases de données relationnelles, sécurisation des accès) et des problématiques métier propres à la recherche scientifique.
 
+À travers ce travail, nous détaillerons nos choix technologiques (Node.js, Typescript, Next.js, Docker, Python pour l'IA), les défis rencontrés (orchestration de microservices, synchronisation des données) et les résultats obtenus, tout en soulignant l’apport de cette solution dans l’amélioration de la productivité et de la coordination inter-équipes au sein des infrastructures de recherche.
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
@@ -1178,10 +1192,6 @@ Docker a été un pilier de notre mise en œuvre, assurant la cohérence des env
     \item Intégration possible avec GitHub Actions pour automatiser les builds et tests continus.
 \end{itemize}
 
-\section{Synthèse}
-
-Cette phase de mise en œuvre a permis d'établir une base solide pour le développement du site web, en s'appuyant sur des outils et méthodes professionnels garantissant qualité, traçabilité et collaboration efficace. Bien que le déploiement en production ne soit pas encore réalisé, toutes les préparations nécessaires ont été intégrées dès cette étape afin de faciliter cette future étape.
-
 \section{Méthodologie de Développement}
 \subsubsection{Approche Agile Adoptée}
 Le projet a suivi une méthodologie \textbf{Agile} adaptée aux contraintes académiques et à la taille réduite de l'équipe. Cette approche a été structurée en sprints courts de deux semaines, avec une répartition claire des responsabilités techniques.
@@ -1224,7 +1234,122 @@ Documentation & Juste suffisante & Exhaustive dès le début \\
 \label{tab:compare-meth}
 \end{table}
 
-\subsection{Captures d'écran de l'application}
+\section{Défis technologiques : Intégration Full-Stack et Intelligence Artificielle}
+
+L’intégration conjointe d’une architecture full-stack moderne et de modules d’intelligence artificielle a représenté un défi majeur dans le développement de notre application. Cette section détaille les problématiques rencontrées, les décisions techniques prises et les perspectives envisagées pour optimiser l’ensemble.
+
+\subsection{Architecture Full-Stack : Complexité et Cohérence}
+
+L’utilisation d’une architecture full-stack basée sur \textit{Node.js / Rust / Next.js / Postegres} a nécessité une coordination fine entre le front-end et le back-end :
+
+\begin{itemize}
+    \item \textbf{Synchronisation des flux de données} : La gestion des appels API asynchrones a exigé la mise en place de stratégies de cache, de pagination, et de validation côté client.
+    \item \textbf{Sécurité} : Implémentation de politiques de sécurisation des endpoints, gestion des tokens JWT et protection contre les attaques XSS/CSRF.
+    \item \textbf{Déploiement} : Intégration continue avec conteneurisation (Docker) et orchestration .
+\end{itemize}
+
+\subsection{Intégration des modules IA : Défis d'interopérabilité}
+
+L'intégration des modèles d'intelligence artificielle dans l'écosystème web existant a représenté un défi technique majeur, notamment en raison de la nature hétérogène des technologies employées. Les modèles d'IA, principalement développés en Python avec des frameworks comme TensorFlow et Transformers, ont dû être interfacés avec une architecture web basée sur Next.js, créant ainsi une problématique d'interopérabilité complexe.
+
+Les modèles d'intelligence artificielle ont été développés indépendamment de la structure web initiale, ce qui a engendré plusieurs enjeux techniques et architecturaux :
+
+\begin{itemize}
+    \item \textbf{Interopérabilité technologique} : L'appel aux modèles Python depuis l'environnement Next.js a nécessité l'usage de passerelles comme Flask ou FastAPI, exposées sous forme de microservices. Dans notre implémentation, FastAPI a été retenu pour sa capacité à gérer les communications WebSocket, permettant une interaction en temps réel entre le frontend et les modèles de traitement. Le code suivant illustre cette approche :
+
+\newpage
+\begin{lstlisting}[language=Python, caption=Endpoint WebSocket pour la summarisation]
+@app.websocket("/ws/summarize")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            pdf_path = await websocket.receive_text()
+            if not os.path.isfile(pdf_path):
+                await websocket.send_text("ERROR: File not found.")
+                continue
+            summaries = summarize_pdf(pdf_path)
+            for idx, chunk in enumerate(summaries, 1):
+                await websocket.send_text(f"Part {idx}:\n{chunk}")
+            await websocket.send_text("DONE")
+    except WebSocketDisconnect:
+        print("WebSocket disconnected")
+    \end{lstlisting}
+
+    \item \textbf{Gestion des modèles lourds} : L'exécution de modèles de grande taille comme BART-large-CNN (406M de paramètres) en temps réel a imposé des stratégies d'optimisation spécifiques. Le modèle est pré-chargé au démarrage de l'application pour éviter les temps de latence lors des requêtes :
+    
+    \begin{lstlisting}[language=Python, caption=Initialisation du modèle BART]
+MODEL_NAME = "facebook/bart-large-cnn"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = TFBartForConditionalGeneration.from_pretrained(MODEL_NAME)
+    \end{lstlisting}
+
+    \item \textbf{Segmentation intelligente des documents} : Pour traiter des documents PDF volumineux tout en respectant les contraintes de mémoire des modèles (768 tokens maximum), une stratégie de chunking adaptatif a été développée. Cette approche segmente le texte par phrases tout en préservant la cohérence sémantique :
+    \newpage
+    \begin{lstlisting}[language=Python, caption=Algorithme de segmentation adaptatif]
+def chunk_text(text):
+    sentences = sent_tokenize(text)
+    chunks = []
+    current_chunk = []
+    current_length = 0
+    
+    for sentence in sentences:
+        length = len(tokenizer.encode(sentence))
+        if current_length + length > MAX_CHUNK_TOKENS:
+            chunks.append(" ".join(current_chunk))
+            current_chunk = [sentence]
+            current_length = length
+        else:
+            current_chunk.append(sentence)
+            current_length += length
+    \end{lstlisting}
+
+    \item \textbf{Performances et optimisation} : L'exécution de modèles lourds en temps réel a imposé plusieurs stratégies d'optimisation :
+    \begin{itemize}
+        \item Mise en cache des résultats de tokenisation pour éviter les recalculs
+        \item Traitement par batch des chunks de texte lorsque possible
+        \item Utilisation de TensorFlow avec optimisations GPU quand disponible
+        \item Paramétrage fin des hyperparamètres de génération (num\_beams=4, early\_stopping=True)
+    \end{itemize}
+
+    \item \textbf{Gestion des erreurs et robustesse} : Un système de gestion d'erreurs multicouche a été implémenté pour assurer la robustesse du système :
+    \begin{itemize}
+        \item Validation des fichiers PDF en amont (format, contenu non vide)
+        \item Gestion des déconnexions WebSocket impromptues
+        \item Mécanismes de fallback en cas d'échec de traitement d'un chunk
+        \item Logging détaillé des erreurs pour faciliter le débogage
+    \end{itemize}
+
+    \item \textbf{Monitoring et feedback} : Un système de logs et de monitoring a été mis en place pour détecter les dérives de performances des modèles :
+    \begin{itemize}
+        \item Métriques de temps de traitement par document et par chunk
+        \item Monitoring de l'utilisation mémoire et CPU
+        \item Logs détaillés des erreurs et exceptions
+        \item Système de feedback utilisateur pour évaluer la qualité des résumés
+    \end{itemize}
+
+    \item \textbf{Scalabilité et déploiement} : L'architecture microservice adoptée facilite la scalabilité horizontale :
+    \begin{itemize}
+        \item Containerisation avec Docker pour assurer la reproductibilité
+        \item Possibilité de déployer plusieurs instances du service de summarisation
+        \item Load balancing au niveau du reverse proxy
+        \item Séparation claire entre les responsabilités web et IA
+    \end{itemize}
+\end{itemize}
+
+Cette approche modulaire, bien qu'introduisant une complexité architecturale supplémentaire, offre une flexibilité considérable pour l'évolution future du système. Elle permet notamment l'ajout de nouveaux modèles d'IA sans impact sur l'interface utilisateur, et facilite la maintenance indépendante des différentes couches technologiques.
+
+\subsection{Orchestration globale et scalabilité}
+
+La cohabitation entre les composants traditionnels (base de données, authentification) et les modules IA a nécessité :
+
+\begin{itemize}
+    \item Une \textbf{couche d’abstraction API} pour uniformiser les appels.
+    \item Une \textbf{stratégie de scalabilité horizontale}, notamment via la conteneurisation des services IA indépendamment des modules métier.
+\end{itemize}
+
+\newpage	
+\section{Captures d'écran de l'application}
 
 Cette section présente les différentes interfaces de l'application développée, illustrant les fonctionnalités principales à travers des captures d'écran détaillées. Chaque interface a été conçue pour offrir une expérience utilisateur optimale tout en respectant les principes d'ergonomie et d'accessibilité.
 
@@ -1232,7 +1357,7 @@ Cette section présente les différentes interfaces de l'application développé
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{diagrams/a_ss_02.png}
+    \includegraphics[width=1\textwidth]{diagrams/a_ss_02.png}
     \caption{Interface de connexion utilisateur}
     \label{fig:login}
 \end{figure}
@@ -1249,7 +1374,7 @@ L'interface de connexion présente un design épuré et professionnel, caractér
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_08.png}
+    \includegraphics[width=1\textwidth]{diagrams/a_ss_08.png}
     \caption{Tableau de bord principal avec métriques et aperçu}
     \label{fig:dashboard}
 \end{figure}
@@ -1266,7 +1391,7 @@ Le tableau de bord offre une vue d'ensemble complète des activités du laborato
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_12.png}
+    \includegraphics[width=1\textwidth]{diagrams/a_ss_12.png}
     \caption{Interface de gestion des publications avec filtres et pagination}
     \label{fig:publications}
 \end{figure}
@@ -1291,7 +1416,7 @@ Le module publications comprend des fonctionnalités avancées :
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_13.png}
+    \includegraphics[width=1\textwidth]{diagrams/a_ss_13.png}
     \caption{Génération automatique de résumés par intelligence artificielle}
     \label{fig:ai_summary}
 \end{figure}
@@ -1307,7 +1432,7 @@ L'interface d'intelligence artificielle démontre les capacités avancées du sy
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/a_ss_06.png}
+    \includegraphics[width=0.8\textwidth]{diagrams/a_ss_06.png}
     \caption{Interface de chat avec liste des utilisateurs et groups}
     \label{fig:chat}
 \end{figure}
@@ -1336,7 +1461,7 @@ Les interfaces intègrent des mécanismes de retour (loading states, confirmatio
 
 Cette présentation visuelle confirme que l'application répond aux exigences fonctionnelles tout en offrant une expérience utilisateur moderne et professionnelle, adaptée aux besoins spécifiques d'un laboratoire de recherche.
 
-\newpage
+
 \section{Conclusion}
 Ce projet constitue une réponse concrète aux défis de gestion des laboratoires modernes. En plus de l'implémentation technique, nous avons mis l'accent sur les aspects organisationnels et les bonnes pratiques professionnelles.
 
